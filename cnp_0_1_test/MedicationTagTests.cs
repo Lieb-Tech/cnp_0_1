@@ -98,7 +98,7 @@ namespace cnp_0_1_test
                     var matched = med
                         .Value
                         .FirstOrDefault(z => z.PrimaryName?.ToLower() == extractedNme.ToLower()  
-                                        || z.InferredName?.ToLower() == extractedNme.ToLower());
+                                    || z.InferredName?.ToLower() == extractedNme.ToLower());
                     AssertX.NotNull(matched, extractedNme);
                 }                
             }

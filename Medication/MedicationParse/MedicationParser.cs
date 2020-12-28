@@ -28,16 +28,18 @@ namespace Medication.MedicationParse
 
         public MedicationParseTag ParseLine(TextSpan span)
         {
-            var meds = extractMeds(span);
+            var meds = processLineOfText(span);
             moveExtraNameForward(meds);
-            // meds = moveText(meds);
 
+            // update the tag array, incase moveForward made changes
             foreach (var m in meds)
             {
                 m.UpdateTags();
             }
+            // try to get untagged names
             meds = extractNames(meds);
 
+            // if the last word is untagged, move to seperate med
             meds = processLastTag(meds);
 
             return new MedicationParseTag(meds, span);
@@ -59,10 +61,10 @@ namespace Medication.MedicationParse
                 // if there's an extra name from previous med, use it here
                 if (name != "")
                 {
-                    m.Tags.Insert(0, name);
+                    updateNameFromPrevious(name, m);
                     name = "";
                 }
-
+                
                 if (!m.Tags.Any())
                     continue;
 
@@ -70,16 +72,19 @@ namespace Medication.MedicationParse
                 var anyNonTagged = m.Tags.Any(z => !z.Contains("{"));
 
                 // get any names that isn't first Tag in list
-                var last = m.Tags
+                var medName = m.Tags
                     .Where((z, i) => i > 0 && z.Contains("med:name:"))
                     .FirstOrDefault();
 
-                if (!anyNonTagged || last == null)
+                if (!anyNonTagged || medName == null)
                     continue;
 
-                name = last;
+                // save name for next med
+                name = medName;
+
+                m.OriginalText = m.OriginalText.Replace(medName, "");
                 m.PrimaryName = null;
-                m.Tags.Remove(last);                
+                m.Tags.Remove(medName);                
             }
 
             // if after all infoes processed, there's an "extra" name, create an entry for it
@@ -87,9 +92,30 @@ namespace Medication.MedicationParse
                 meds.Add(new MedicationInfo() { PrimaryName = name });
         }
 
+        /// <summary>
+        /// update current medication with name from previous one
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="medInfo"></param>
+        /// <returns></returns>
+        private MedicationInfo updateNameFromPrevious(string name, MedicationInfo medInfo)
+        {
+            // save name to string
+            medInfo.OriginalText = $"{name} {medInfo.OriginalText}";
+
+            // if first entry is a tag, put name before so next steps can infer it
+            // if (medInfo.Tags.Contains("{"))
+            medInfo.Tags.Insert(0, name);
+            // else
+            // otherwise add the name (not the tag) 
+            // medInfo.Tags[0] = $"{name.TagValue()} {medInfo.Tags[0]}";
+
+            return medInfo;            
+        }
+
 
         /// <summary>
-        /// Try to get naem on last entry 
+        /// Try to get name on last entry 
         /// </summary>
         /// <param name="meds"></param>
         /// <returns></returns>
@@ -110,9 +136,8 @@ namespace Medication.MedicationParse
             
             // create updated version of medication list, with potentially new inferred name
             var updatedMeds = new List<MedicationInfo>(meds);
-            
-            updatedMeds.Remove(last);
-            updatedMeds.Add(context.Data);
+            // update with new item
+            updatedMeds[updatedMeds.Count - 1] = context.Data;
 
             return updatedMeds;
         }
@@ -127,6 +152,7 @@ namespace Medication.MedicationParse
             List<MedicationInfo> updatedMeds = new List<MedicationInfo>();
             foreach (var med in meds)
             {
+                // check if first part is untagged
                 var context = new StrategyContext<MedicationInfo>(med, true);
                 context = postStrategy.Execute(context);
                 updatedMeds.Add(context.Data);
@@ -164,28 +190,44 @@ namespace Medication.MedicationParse
             return newCompleted;
         }
         */
-        internal List<MedicationInfo> extractMeds(TextSpan span)
+
+        /// <summary>
+        /// Main raw line of text processing
+        /// </summary>
+        /// <param name="span"></param>
+        /// <returns></returns>
+        internal List<MedicationInfo> processLineOfText(TextSpan span)
         {
+            // split text into parts -- individual tagged items + span of untagged
             TagStringSplit tss = new();
             var tags = tss.Execute(span.UpdatedText);
 
+            // if no tagged in string, then just move on
             if (!tags.Any(z => z.Contains("med:")))
                 return new List<MedicationInfo>();
 
-             var meds = processTags(tags);
+            // break tags into MedicationInfo objects
+            var meds = processTags(tags);
 
             return meds;
         }
 
+        /// <summary>
+        /// Loop through the tags in a string
+        /// </summary>
+        /// <param name="tags"></param>
+        /// <returns></returns>
         internal List<MedicationInfo> processTags(List<string> tags)
         {
             ProcessAndCompletedContext<MedicationInfo> context = new() { InProcess = new MedicationInfo() };
 
+            // pass on to TagRunnger to proces the tag
             foreach (var tag in tags) 
             { 
                 context = tagRunner.ProcessTag(context, tag);
             }
 
+            // save the results to
             context.Completed.Add(context.InProcess);
             return context.Completed;
         }

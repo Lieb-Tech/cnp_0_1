@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Medication.MedicationTag
 {
+    // Todo: Split into strategies
     class LineNumBuilder : IStrategy<TextSpan>
     {
         private readonly Regex _dotSpace = new Regex(@"^(\d{1,2}\.\s?)");
@@ -11,14 +12,16 @@ namespace Medication.MedicationTag
 
         public StrategyContext<TextSpan> Execute(StrategyContext<TextSpan> context)
         {
+            // line starts with:  "1. abcedfghi"
             var match = _dotSpace.Match(context.Data.UpdatedText);
             if (match.Success)
             {
                 var updated = _dotSpace.Replace(context.Data.UpdatedText, $"{{med:li:{match.Value.Trim()}}} ");
                 var data = context.Data with { UpdatedText = updated };
                 return new StrategyContext<TextSpan>(data, true);
-            }            
+            }
 
+            // line starts with:  "1.abcedfghi"
             match = _dotChar.Match(context.Data.UpdatedText);
             if (match.Success)
             {
@@ -28,6 +31,7 @@ namespace Medication.MedicationTag
                 return new StrategyContext<TextSpan>(data, true);
             }
 
+            // line starts with:  "1 abcedfghi"
             match = _space.Match(context.Data.UpdatedText);
             if (match.Success)
             {

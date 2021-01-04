@@ -7,7 +7,8 @@ namespace Medication.MedicationParse.InferredNameStrategies
     public class UntaggedFirstTagStrategy : IStrategy<MedicationInfo>
     {
         /// <summary>
-        /// Given: Primary name is last value in text string of 1st element of Tags
+        /// Given: Primary name is last word in 1st Tag 
+        /// and: 1st Tag is untagged
         /// Then: Extract primary from the string
         /// and: if any remainder, insert as new Tag entry
         /// </summary>

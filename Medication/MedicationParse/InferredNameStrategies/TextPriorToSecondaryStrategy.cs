@@ -4,22 +4,22 @@ using System.Linq;
 
 namespace Medication.MedicationParse.InferredNameStrategies
 {
-    public class UntaggedFirstTagStrategy : IStrategy<MedicationInfo>
+    class TextPriorToSecondaryStrategy : IStrategy<MedicationInfo>
     {
-        /// <summary>
-        /// Given: Primary name is last value in text string of 1st element of Tags
-        /// Then: Extract primary from the string
-        /// and: if any remainder, insert as new Tag entry
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
         public StrategyContext<MedicationInfo> Execute(StrategyContext<MedicationInfo> context)
         {
-            if (context.Data.Tags[0].Contains("{"))
+            var pts = new PriorToSecondary();
+            var untagged = pts.GetTagPriorToSecondary(context.Data.Tags);
+
+            if (untagged == null)
+                return context;
+
+            // if single word, then this logic doesn't apply
+            if (untagged.Tag.Split(" ", StringSplitOptions.RemoveEmptyEntries).Count() == 1)
                 return context;
 
             // split into seperate words 
-            var values = context.Data.Tags[0].Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
+            var values = untagged.Tag.Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
 
             // if blank, or only 1 item, then nothing to process
             if (!values.Any())
@@ -30,17 +30,17 @@ namespace Medication.MedicationParse.InferredNameStrategies
             var orig = context.Data.OriginalText.Replace(values.Last(), inferred);
 
             // save inferred name to tag list
-            context.Data.Tags.Insert(1, inferred);
+            context.Data.Tags.Insert(untagged.Index + 1, inferred);
 
             // remove the name from the original string with the name
-            var replaceValue = context.Data.Tags[1].Replace(values.Last(), "");
+            var replaceValue = context.Data.Tags[untagged.Index].Replace(values.Last(), "");
 
             // if there were other words in original string, then save to list
             if (!string.IsNullOrWhiteSpace(replaceValue))
-                context.Data.Tags[0] = replaceValue;
+                context.Data.Tags[untagged.Index ] = replaceValue;
             else
                 // or no other text, then remove blank element from array
-                context.Data.Tags.RemoveAt(1);
+                context.Data.Tags.RemoveAt(untagged.Index);
 
             // return updated data
             var data = context.Data with

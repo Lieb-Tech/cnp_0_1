@@ -12,8 +12,9 @@ namespace Medication.MedicationParse.ParseStrategies
         public NameExtractionStrategy(Specification<MedicationInfo> specification)
         {
             _specification = specification;
-
-            _inferred = new PriorToSecondaryStrategy()
+            // configure logics to extract name
+            _inferred = new SinglePriorToSecondaryStrategy()
+                .Then(new TextPriorToSecondaryStrategy())
                 .Then(new UntaggedFirstTagStrategy());
         }
         public StrategyContext<MedicationInfo> Execute(StrategyContext<MedicationInfo> context)

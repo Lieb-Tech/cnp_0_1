@@ -19,6 +19,38 @@ namespace cnp_0_1_test
             if (meds.Any())
                 return;
 
+            meds.Add("Starting Today NEXIUM ( ESOMEPRAZOLE ) 20 MG PO QD ZETIA ( EZETIMIBE ) 10 MG PO QD ZOCOR ( SIMVASTATIN ) 40 MG PO QHS",
+                new List<MedicationInfo>()
+                {
+                    new MedicationInfo()
+                    {
+                         InferredName = "NEXIUM",
+                          SecondaryName = "ESOMEPRAZOLE",
+                          Size = "20",
+                          Unit = "MG",
+                          Frequency = "QD",
+                          Method = "PO"
+                    },
+                    new MedicationInfo()
+                    {
+                         InferredName = "ZETIA",
+                          SecondaryName = "EZETIMIBE",
+                          Size = "10",
+                          Unit = "MG",
+                          Frequency = "QD",
+                          Method = "PO"
+                    },
+                    new MedicationInfo()
+                    {
+                        InferredName = "ZOCOR",
+                          SecondaryName = "SIMVASTATIN",
+                          Size = "40",
+                          Unit = "MG",
+                          Frequency = "QHS",
+                          Method = "PO"
+                    }
+                });
+
             meds.Add("1. Aspirin 81 mg every day .", 
                 new List<MedicationInfo>()
             {

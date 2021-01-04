@@ -1,4 +1,5 @@
 ﻿using Common;
+using Medication.MedicationParse.InferredNameStrategies;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,22 +8,23 @@ namespace Medication.MedicationParse.ParseStrategies
     public class NameExtractionStrategy : IStrategy<MedicationInfo>
     {
         private readonly Specification<MedicationInfo> _specification;
+        private readonly ChainedStrategy<MedicationInfo> _inferred;
         public NameExtractionStrategy(Specification<MedicationInfo> specification)
         {
             _specification = specification;
+
+            _inferred = new PriorToSecondaryStrategy()
+                .Then(new UntaggedFirstTagStrategy());
         }
         public StrategyContext<MedicationInfo> Execute(StrategyContext<MedicationInfo> context)
         {
-            // don't have name, but have 2 other items tagged
             bool tryToExtract = _specification.IsSatisfiedBy(context.Data);
             if (!tryToExtract)
                 return context;
-            
-            // get the parenthetical name   
-            var data = processSecondaryInLine(context.Data);
 
-            if (string.IsNullOrWhiteSpace(context.Data.SecondaryName))
-                data = processSecondaryNextTag(data);
+            MedicationInfo data = context.Data;
+            if (string.IsNullOrWhiteSpace(data.SecondaryName))
+                data = processSecondaryNextTag(context.Data);
 
             // now get the last word in untagged text 
             data = getInferred(data);
@@ -30,43 +32,21 @@ namespace Medication.MedicationParse.ParseStrategies
             return new StrategyContext<MedicationInfo>(data, true);
         }
 
+        /// <summary>
+        /// if primary name not set, try infer name from text
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         internal MedicationInfo getInferred(MedicationInfo data)
-        {
-            if (!data.Tags.Any())
-                return data;
-            
-            // if the value is not a tag, then skip
-            if (data.Tags[0].Contains("{"))
+        {            
+            if (!data.Tags.Any() || !string.IsNullOrEmpty(data.PrimaryName))
                 return data;
 
-            // split into seperate words 
-            var values = data.Tags[0].Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
+            // try different strategies to extract values
+            var context = new StrategyContext<MedicationInfo>(data, true);
+            context = _inferred.Execute(context);
 
-            // if blank, or only 1 item, then nothing to process
-            if (!values.Any())
-                return data;
-
-            // get the last word in string
-            var inferred = "{med:infer:" + values.Last() + "}";
-
-            // save inferred name to tag list
-            data.Tags.Insert(0, inferred);
-           
-            // remove the name from the original string with the name
-            var replaceValue = data.Tags[1].Replace(values.Last(), "");
-
-            // if there were other words in original string, then save to list
-            if (!string.IsNullOrWhiteSpace(replaceValue))
-                data.Tags[1] = replaceValue;
-            else
-                // or no other text, then remove blank element from array
-                data.Tags.RemoveAt(1);
-
-            // return updated data
-            return data with
-            {
-                InferredName = inferred?.TagValue()
-            };
+            return context.Data;
         }
 
         /// <summary>

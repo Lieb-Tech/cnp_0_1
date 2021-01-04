@@ -11,7 +11,14 @@
         }
         public StrategyContext<T> Execute(StrategyContext<T> context)
         {
-            return _second.Execute(_first.Execute(context));    
+            // execute first action
+            context = _first.Execute(context);
+
+            // if can continue, then do next
+            if (context.Continue)
+                context = _second.Execute(context);
+
+            return context;
         }
     }
 }

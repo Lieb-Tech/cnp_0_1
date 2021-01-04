@@ -24,23 +24,31 @@ namespace Medication.MedicationParse
             tagRunner.AddSpecificationStrategy(new FormatSpecification(), new FormatSetSpecification(), new FormatStrategy());
             tagRunner.AddSpecificationStrategy(new QualSpecification(), new QualSetSpecification(), new QualStrategy());
             tagRunner.AddSpecificationStrategy(new InstructionSpecification(), new InstructionSetSpecification(), new InstructionStrategy());
+            tagRunner.AddSpecificationStrategy(new SecondaryNameSpecification(), new SecondaryNameSetSpecification(), new SecondaryNameStrategy());
         }
 
         public MedicationParseTag ParseLine(TextSpan span)
         {
             var meds = processLineOfText(span);
-            moveExtraNameForward(meds);
+            meds = moveExtraNameForward(meds);
 
             // update the tag array, incase moveForward made changes
             foreach (var m in meds)
             {
                 m.UpdateTags();
             }
+
             // try to get untagged names
             meds = extractNames(meds);
 
             // if the last word is untagged, move to seperate med
             meds = processLastTag(meds);
+
+            // update the tag array, incase moveForward made changes
+            foreach (var m in meds)
+            {
+                m.UpdateTags();
+            }
 
             return new MedicationParseTag(meds, span);
         }
@@ -49,48 +57,65 @@ namespace Medication.MedicationParse
         /// If contains a med:name Tag, that's not the 1st entry, then move it to next MedicationInfo
         /// Ex: name size unit name; remove the 2nd name and assign to either Info in list
         /// </summary>
-        /// <param name="meds"></param>
+        /// <param name="medications"></param>
         /// <returns></returns>
-        internal void moveExtraNameForward(List<MedicationInfo> meds)
+        internal List<MedicationInfo>  moveExtraNameForward(List<MedicationInfo> medications)
         {
+            List<MedicationInfo> meds = new List<MedicationInfo>();
+
             // "extra" name 
             string name = "";
-
-            foreach (var m in meds)
+            
+            foreach (var medication in medications)
             {
+                var med = medication with { };
                 // if there's an extra name from previous med, use it here
                 if (name != "")
                 {
-                    updateNameFromPrevious(name, m);
+                    med = updateNameFromPrevious(name, medication);
                     name = "";
                 }
-                
-                if (!m.Tags.Any())
-                    continue;
 
-                // if there are entries w/o a tag (potentially a name)
-                var anyNonTagged = m.Tags.Any(z => !z.Contains("{"));
+                (med, name) = moveMedicationNameForward(med);
 
-                // get any names that isn't first Tag in list
-                var medName = m.Tags
-                    .Where((z, i) => i > 0 && z.Contains("med:name:"))
-                    .FirstOrDefault();
-
-                if (!anyNonTagged || medName == null)
-                    continue;
-
-                // save name for next med
-                name = medName;
-
-                m.OriginalText = m.OriginalText.Replace(medName, "");
-                m.PrimaryName = null;
-                m.Tags.Remove(medName);                
+                meds.Add(med);
             }
 
             // if after all infoes processed, there's an "extra" name, create an entry for it
             if (!string.IsNullOrEmpty(name))
                 meds.Add(new MedicationInfo() { PrimaryName = name });
+
+            return meds;
         }
+
+        internal (MedicationInfo, string) moveMedicationNameForward(MedicationInfo medication)
+        {
+            if (!medication.Tags.Any())
+                return (medication, "");
+
+            var med = medication with { };
+
+            // if there are entries w/o a tag (potentially a name)
+            var anyNonTagged = med.Tags.Any(z => !z.Contains("{"));
+
+            // get any names that isn't first Tag in list
+            var medName = med.Tags
+                .Where((z, i) => i > 0 && z.Contains("med:name:"))
+                .FirstOrDefault();
+
+            if (!anyNonTagged || medName == null)
+                return (medication, "");
+
+            // save name for next med
+            var name = medName;
+
+            med.OriginalText = med.OriginalText.Replace(medName, "");
+            med.PrimaryName = null;
+            med.Tags.Remove(medName);
+
+            return (med, name);
+        }
+
 
         /// <summary>
         /// update current medication with name from previous one
@@ -101,18 +126,14 @@ namespace Medication.MedicationParse
         private MedicationInfo updateNameFromPrevious(string name, MedicationInfo medInfo)
         {
             // save name to string
-            medInfo.OriginalText = $"{name} {medInfo.OriginalText}";
+            var orig = $"{name} {medInfo.OriginalText}";
 
             // if first entry is a tag, put name before so next steps can infer it
-            // if (medInfo.Tags.Contains("{"))
-            medInfo.Tags.Insert(0, name);
-            // else
-            // otherwise add the name (not the tag) 
-            // medInfo.Tags[0] = $"{name.TagValue()} {medInfo.Tags[0]}";
+            var tags = new List<string>(medInfo.Tags);
+            tags.Insert(0, name);
 
-            return medInfo;            
+            return medInfo with { OriginalText = orig, Tags = tags };
         }
-
 
         /// <summary>
         /// Try to get name on last entry 
@@ -160,37 +181,7 @@ namespace Medication.MedicationParse
             return updatedMeds;
         }
 
-        /*
-        internal List<MedicationInfo> moveText(List<MedicationInfo> completed)
-        {
-            if (!completed.Any())
-                return new List<MedicationInfo>();
-
-            var newCompleted = new List<MedicationInfo>();
-            
-            for (int i = 0; i <= completed.Count - 2; i++)
-            {
-                var idx = completed[i].OriginalText.LastIndexOf("}");
-                var current = completed[i];
-                if (idx == -1 || idx == current.OriginalText.Length - 1)
-                    newCompleted.Add(completed[i]);
-                else
-                {
-                    var txt = current.OriginalText.Substring(idx + 1);
-                    var updated = current with { OriginalText = current.OriginalText.Substring(0, idx + 1) };
-                    newCompleted.Add(updated);
-
-                    txt = txt + completed[i + 1].OriginalText;
-                    completed[i + 1] = completed[i + 1] with { OriginalText = txt };
-                }
-            }
-
-            newCompleted.Add(completed.Last());
-
-            return newCompleted;
-        }
-        */
-
+       
         /// <summary>
         /// Main raw line of text processing
         /// </summary>

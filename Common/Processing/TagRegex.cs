@@ -14,6 +14,9 @@ namespace Common.Processing
         public TagRegex(string pattern, string tag, bool caseInsensative = true)
         {
             _tag = tag;
+            if (!_tag.EndsWith(":"))
+                _tag += ":";
+
             if (caseInsensative)
                 _regex = new Regex(pattern, RegexOptions.IgnoreCase);
             else
@@ -27,7 +30,5 @@ namespace Common.Processing
             var span = context.Data with { UpdatedText = txt };
             return new StrategyContext<TextSpan>(span, true);
         }
-
-
     }
 }

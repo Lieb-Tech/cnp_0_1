@@ -19,6 +19,88 @@ namespace cnp_0_1_test
             if (meds.Any())
                 return;
 
+            meds.Add("1. Aspirin 81 mg every day .", 
+                new List<MedicationInfo>()
+            {
+                new MedicationInfo()
+                {
+                     PrimaryName = "Aspirin",
+                      Size = "81",
+                       Unit = "mg",
+                        Qualifier = "every day"
+                }
+            });
+
+            meds.Add("2. Amitriptyline 25 mg at bedtime.",
+                new List<MedicationInfo>()
+            {
+                new MedicationInfo()
+                {
+                     InferredName = "Amitriptyline",
+                      Size = "25",
+                       Unit = "mg",
+                        Qualifier = "at bedtime"
+                }
+            });
+
+            meds.Add("3.Atenolol 50 mg per day.", 
+                new List<MedicationInfo>()
+            {
+                new MedicationInfo()
+                {
+                     InferredName = "Atenolol",
+                      Size = "50",
+                       Unit = "mg",
+                        Frequency = "qd"
+                }
+            });
+
+            meds.Add("Take with food DILAUDID ( HYDROMORPHONE HCL ) 2-4 MG PO Q4H PRN Pain TYLENOL ( ACETAMINOPHEN ) 650 MG PO Q4H PRN Pain",
+                new List<MedicationInfo>()
+                {
+                    new MedicationInfo()
+                    {
+                         InferredName = "DILAUDID",
+                         SecondaryName = "HYDROMORPHONE HCL",
+                         Size = "2-4",
+                         Unit = "MG",
+                         Frequency = "Q4H",
+                         Qualifier = "PRN",
+                    },
+                    new MedicationInfo()
+                    {
+                         InferredName = "TYLENOL",
+                         SecondaryName = "ACETAMINOPHEN",
+                         Size = "650",
+                         Unit = "MG",
+                         Frequency = "Q4H",
+                         Qualifier = "PRN",
+                    },
+                });
+
+            meds.Add("ECASA ( ASPIRIN ENTERIC COATED ) 325 MG PO QD LOPRESSOR ( METOPROLOL TARTRATE ) 25 MG PO BID Starting Today ",
+                new List<MedicationInfo>()
+                {
+                    new MedicationInfo()
+                    {
+                        InferredName = "ECASA",
+                        Size = "325",
+                        Unit = "MG",
+                        Method = "PO",
+                        Frequency = "QD",
+                        SecondaryName = "ASPIRIN ENTERIC COATED"
+                    },
+                    new MedicationInfo()
+                    {
+                        InferredName = "LOPRESSOR",
+                        Size = "25",
+                        Unit = "MG",
+                        Method = "PO",
+                        Frequency = "BID",
+                        SecondaryName = "METOPROLOL TARTRATE"
+                    },
+                });
+
             meds.Add("4 NEXIUM ( ESOMEPRAZOLE ) 20 MG PO QD LANTUS ( INSULIN GLARGINE ) 12 UNITS SC QHS METFORMIN 1,000",
                 new List<MedicationInfo>()
                 {
@@ -46,6 +128,7 @@ namespace cnp_0_1_test
                          Size ="1,000"
                      }
                 });
+
             meds.Add("OXYCODONE 5-10 MG PO Q3H Starting when TOLERATING FOOD PRN Pain CELEXA ( CITALOPRAM ) 20 MG PO QD",
                 new List<MedicationInfo>()
                 {
@@ -67,7 +150,7 @@ namespace cnp_0_1_test
                         Frequency = "Q3H",
                         Qualifier = "PRN"
                     }
-            });
+            });            
         }
 
         [Fact]
@@ -99,7 +182,7 @@ namespace cnp_0_1_test
                         .Value
                         .FirstOrDefault(z => z.PrimaryName?.ToLower() == extractedNme.ToLower()  
                                     || z.InferredName?.ToLower() == extractedNme.ToLower());
-                    AssertX.NotNull(matched, extractedNme);
+                    AssertX.NotNull(matched, extractedMed + " ---- " + extractedNme);
                 }                
             }
         }

@@ -1,7 +1,6 @@
 ﻿using Medication.MedicationParse.ParseStrategies;
 using Common;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Medication.MedicationParse.ParseSpecifications
 {
@@ -24,7 +23,7 @@ namespace Medication.MedicationParse.ParseSpecifications
         
         public ProcessAndCompletedContext<MedicationInfo> ProcessTag(ProcessAndCompletedContext<MedicationInfo> context, string tag)
         {
-            if (tag.Contains("gen:li"))
+            if (tag.Contains("gen:li") || tag.Contains("med:li"))
                 return context;
 
             foreach (var strategy in strategies)

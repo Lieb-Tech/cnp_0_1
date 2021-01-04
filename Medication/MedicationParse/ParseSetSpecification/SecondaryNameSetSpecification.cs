@@ -5,12 +5,11 @@ using System.Linq.Expressions;
 
 namespace Medication.MedicationParse.ParseStrat2
 {
-    public class NameSetSpecification : Specification<MedicationInfo>
+    public class SecondaryNameSetSpecification : Specification<MedicationInfo>
     {
         public override Expression<Func<MedicationInfo, bool>> ToExpression()
         {
-            return ctx => string.IsNullOrEmpty(ctx.PrimaryName)
-                            && ctx.ItemsSet == 0;
+            return ctx => string.IsNullOrEmpty(ctx.SecondaryName);
         }
     }
 }

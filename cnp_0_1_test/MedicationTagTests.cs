@@ -19,6 +19,46 @@ namespace cnp_0_1_test
             if (meds.Any())
                 return;
 
+            meds.Add("Starting Today NEXIUM 20 MG PO QD ZETIA ( EZETIMIBE ) 10 MG PO QD ZOCOR ( SIMVASTATIN ) 40 MG PO QHS",
+                new List<MedicationInfo>()
+                {
+                    new MedicationInfo()
+                    {
+                         InferredName = "NEXIUM",                          
+                          Size = "20",
+                          Unit = "MG",
+                          Frequency = "QD",
+                          Format = "PO"
+                    },
+                    new MedicationInfo()
+                    {
+                         InferredName = "ZETIA",
+                          SecondaryName = "EZETIMIBE",
+                          Size = "10",
+                          Unit = "MG",
+                          Frequency = "QD",
+                          Format = "PO"
+                    },
+                    new MedicationInfo()
+                    {
+                        InferredName = "ZOCOR",
+                          SecondaryName = "SIMVASTATIN",
+                          Size = "40",
+                          Unit = "MG",
+                          Frequency = "QHS",
+                          Format = "PO"
+                    }
+                });
+
+            meds.Add("1. Aspirin",
+                new List<MedicationInfo>()
+            {
+                new MedicationInfo()
+                {
+                     PrimaryName = "Aspirin",                      
+                }
+            });
+
             meds.Add("Starting Today NEXIUM ( ESOMEPRAZOLE ) 20 MG PO QD ZETIA ( EZETIMIBE ) 10 MG PO QD ZOCOR ( SIMVASTATIN ) 40 MG PO QHS",
                 new List<MedicationInfo>()
                 {
@@ -29,7 +69,7 @@ namespace cnp_0_1_test
                           Size = "20",
                           Unit = "MG",
                           Frequency = "QD",
-                          Method = "PO"
+                          Format = "PO"
                     },
                     new MedicationInfo()
                     {
@@ -38,7 +78,7 @@ namespace cnp_0_1_test
                           Size = "10",
                           Unit = "MG",
                           Frequency = "QD",
-                          Method = "PO"
+                          Format = "PO"
                     },
                     new MedicationInfo()
                     {
@@ -47,7 +87,7 @@ namespace cnp_0_1_test
                           Size = "40",
                           Unit = "MG",
                           Frequency = "QHS",
-                          Method = "PO"
+                          Format = "PO"
                     }
                 });
 
@@ -59,7 +99,7 @@ namespace cnp_0_1_test
                      PrimaryName = "Aspirin",
                       Size = "81",
                        Unit = "mg",
-                        Qualifier = "every day"
+                        Frequency = "every day"
                 }
             });
 
@@ -71,7 +111,7 @@ namespace cnp_0_1_test
                      InferredName = "Amitriptyline",
                       Size = "25",
                        Unit = "mg",
-                        Qualifier = "at bedtime"
+                        Frequency = "at bedtime"
                 }
             });
 
@@ -83,7 +123,7 @@ namespace cnp_0_1_test
                      InferredName = "Atenolol",
                       Size = "50",
                        Unit = "mg",
-                        Frequency = "qd"
+                        Frequency = "per day"
                 }
             });
 
@@ -118,7 +158,7 @@ namespace cnp_0_1_test
                         InferredName = "ECASA",
                         Size = "325",
                         Unit = "MG",
-                        Method = "PO",
+                        Format = "PO",
                         Frequency = "QD",
                         SecondaryName = "ASPIRIN ENTERIC COATED"
                     },
@@ -127,7 +167,7 @@ namespace cnp_0_1_test
                         InferredName = "LOPRESSOR",
                         Size = "25",
                         Unit = "MG",
-                        Method = "PO",
+                        Format = "PO",
                         Frequency = "BID",
                         SecondaryName = "METOPROLOL TARTRATE"
                     },
@@ -142,7 +182,7 @@ namespace cnp_0_1_test
                         SecondaryName = "ESOMEPRAZOLE",
                         Size = "20",
                         Unit = "MG",
-                        Method = "PO",
+                        Format = "PO",
                         Frequency = "QD"
                     },
                     new MedicationInfo()
@@ -168,8 +208,9 @@ namespace cnp_0_1_test
                     {
                         InferredName = "OXYCODONE",
                         Size = "5-10",
-                        Method = "PO",
+                        Format = "PO",
                         Frequency = "Q3H",
+                        Unit = "MG",
                         Qualifier = "PRN"
                     },
                     new MedicationInfo()
@@ -178,8 +219,8 @@ namespace cnp_0_1_test
                         SecondaryName = "CITALOPRAM",
                         Size = "20",
                         Unit = "MG",
-                        Method = "PO",
-                        Frequency = "Q3H",
+                        Format = "PO",
+                        Frequency = "QD",
                         Qualifier = "PRN"
                     }
             });            
@@ -216,6 +257,90 @@ namespace cnp_0_1_test
                                     || z.InferredName?.ToLower() == extractedNme.ToLower());
                     AssertX.NotNull(matched, extractedMed + " ---- " + extractedNme);
                 }                
+            }
+        }
+
+        [Fact]
+        public void SizeTests()
+        {
+            var medParse = new Medication.MedicationProcessor();
+
+            foreach (var med in meds)
+            {
+                var result = medParse.Process(med.Key);
+
+                foreach (var extractedMed in result.medications)
+                {
+                    string extractedNme = (extractedMed.PrimaryName ?? "") + (extractedMed.InferredName ?? "");
+                    var matched = med
+                        .Value
+                        .FirstOrDefault(z => z.PrimaryName?.ToLower() == extractedNme.ToLower()
+                                    || z.InferredName?.ToLower() == extractedNme.ToLower());
+                    Assert.Equal(matched.Size, extractedMed.Size);
+                }
+            }
+        }
+
+        [Fact]
+        public void UnitTests()
+        {
+            var medParse = new Medication.MedicationProcessor();
+
+            foreach (var med in meds)
+            {
+                var result = medParse.Process(med.Key);
+
+                foreach (var extractedMed in result.medications)
+                {
+                    string extractedNme = (extractedMed.PrimaryName ?? "") + (extractedMed.InferredName ?? "");
+                    var matched = med
+                        .Value
+                        .FirstOrDefault(z => z.PrimaryName?.ToLower() == extractedNme.ToLower()
+                                    || z.InferredName?.ToLower() == extractedNme.ToLower());
+                    Assert.Equal(matched.Unit, extractedMed.Unit);
+                }
+            }
+        }
+
+        [Fact]
+        public void MethodTests()
+        {
+            var medParse = new Medication.MedicationProcessor();
+
+            foreach (var med in meds)
+            {
+                var result = medParse.Process(med.Key);
+
+                foreach (var extractedMed in result.medications)
+                {
+                    string extractedNme = (extractedMed.PrimaryName ?? "") + (extractedMed.InferredName ?? "");
+                    var matched = med
+                        .Value
+                        .FirstOrDefault(z => z.PrimaryName?.ToLower() == extractedNme.ToLower()
+                                    || z.InferredName?.ToLower() == extractedNme.ToLower());
+                    Assert.Equal(matched.Method, extractedMed.Method);
+                }
+            }
+        }
+
+        [Fact]
+        public void FrequencyTests()
+        {
+            var medParse = new Medication.MedicationProcessor();
+
+            foreach (var med in meds)
+            {
+                var result = medParse.Process(med.Key);
+
+                foreach (var extractedMed in result.medications)
+                {
+                    string extractedNme = (extractedMed.PrimaryName ?? "") + (extractedMed.InferredName ?? "");
+                    var matched = med
+                        .Value
+                        .FirstOrDefault(z => z.PrimaryName?.ToLower() == extractedNme.ToLower()
+                                    || z.InferredName?.ToLower() == extractedNme.ToLower());
+                    Assert.Equal(matched.Frequency, extractedMed.Frequency);
+                }
             }
         }
     }

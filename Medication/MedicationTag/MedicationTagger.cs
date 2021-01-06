@@ -21,25 +21,32 @@ namespace Medication.MedicationTag
                .Then(new TimesADayBuilder())
                .Then(new InstructionBuilder())
 
+               .Then(new TextNumberSplitBuilder())
+
                .Then(new TagRegex("prn [a-z]* pain", "med:qual:"))
                .Then(new TagRegex("(prn pain)|(prn)", "med:qual:"))
 
-               .Then(new TagRegex("(\\sSC\\s)|(\\ssc\\s)|(topical tp)|(TOPICAL TP)", "med:format:"))
-               .Then(new TagRegex("(\\spo\\s)|(\\sPO\\s)|(sublingual)|(SUBLINGUAL)|(\\siv\\s)", "med:format:"))
+               .Then(new TagRegex("\\s((SC)|(topical tp)|(TP))\\s", "med:format:"))
+               .Then(new TagRegex("\\s((po)|(sublingual)|(iv)|(oral(ly)?))\\s", "med:format:"))
+               .Then(new TagRegex("INHALER", "med:format:"))
 
                .Then(new TagRegex("(tropical\\s*tp)|(TROPICAL\\s*TP)", "med:format:"))
 
-               .Then(new TagRegex("[qQ][0-9][DdHhMm]", "med:freq:"))
-               .Then(new TagRegex("([Qq][0-9]-[0-9][hH])", "med:freq:"))
+               .Then(new TagRegex("[qQ][0-9]\\s?[DdHhMm]", "med:freq:"))
+               .Then(new TagRegex("([Qq][0-9]-[0-9]\\s?[hH])", "med:freq:"))
+               .Then(new TagRegex("((every)\\s?[0-9]-[0-9]\\s?((hr(s)?)|(h))?)", "med:freq:"))
 
                .Then(new TagRegex("(per day)|(PER DAY)", "med:freq:"))
-               .Then(new TagRegex("(every day)|(EVERY DAY)", "med:freq:"))
-               .Then(new TagRegex("(at bedtime)|(AT BEDTIME)", "med:freq:"))
+               .Then(new TagRegex("(every day)|(EVERYDAY)", "med:freq:"))
+               .Then(new TagRegex("(at bedtime)|(breakfast)", "med:freq:"))
 
-               .Then(new TagRegex("(bid)|(tid)|(qid)|(qd)|(qhs)|(q[0-9]-[0-9]h)|(q[0-9]h)", "med:freq:"))
-               .Then(new TagRegex("(BID)|(TID)|(QID)|(QD)|(QHS)|(Q[0-9]-[0-9]H)|(Q[0-9]H)", "med:freq:"))
+               .Then(new TagRegex("\\s((bid)|(tid)|(QAM)|(QPM)|(qid)|(qd)|(qhs)|(q[0-9]-[0-9]\\s?h)|(q\\s?[0-9]\\s?h))", "med:freq:"))
 
-               .Then(new TagRegex("\\s((UNIT(S?))|(mg)|(MG)|([Tt][aA][Bb]([lL][eE][Tt]([sS])?)?))", "med:unit:"))
+               .Then(new TagRegex(@"\s(puff(s?))", "med:unit:"))
+               .Then(new TagRegex(@"\s(unit(s?))", "med:unit:"))
+               .Then(new TagRegex(@"\s(mg(s?))", "med:unit:"))
+               .Then(new TagRegex(@"\s(tab(s?))", "med:unit:"))
+               .Then(new TagRegex(@"\s(cap(s?)(ule(s?)))", "med:unit:"))
 
                .Then(new TagRegex("\\d+-\\d+-\\d+", "gen:id:"))
                .Then(new TagRegex("\\d+-\\d+", "med:num:"))
@@ -48,10 +55,9 @@ namespace Medication.MedicationTag
 
                .Then(new TagRegex("(\\([\\sa-zA-Z0-9]+\\))", "med:secondary:"))
 
-               .Then(new TagRegex(@"\d+\.\d+", "med:num:"))
-               .Then(new TagRegex(@"\d+-\d+", "med:num:"))
-               .Then(new TagRegex(@"(\d+,)*\d+(\.\d+)?", "med:num:"))
-               .Then(new TagRegex(@"\d+", "med:num:"));
+               .Then(new TagRegex(@"[0-9]+\s?(\\|/|-|to)\s?[0-9]+", "med:num:"))
+               .Then(new TagRegex(@"([0-9]+,)*[0-9]+(\.[0-9]+)?", "med:num:"))
+               .Then(new TagRegex(@"[0-9]+", "med:num:"));
 
                 // .Then(new TagRegex("for \\d day(s)?", "med:other:"));
                 // .Then(new TagRegex("starting \\w?", "med:other:"));

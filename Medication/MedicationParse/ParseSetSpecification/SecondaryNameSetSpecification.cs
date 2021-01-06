@@ -9,7 +9,9 @@ namespace Medication.MedicationParse.ParseStrat2
     {
         public override Expression<Func<MedicationInfo, bool>> ToExpression()
         {
-            return ctx => string.IsNullOrEmpty(ctx.SecondaryName);
+            return ctx => string.IsNullOrEmpty(ctx.SecondaryName) 
+                && string.IsNullOrEmpty(ctx.PrimaryName) 
+                && ctx.ItemsSet == 0;
         }
     }
 }

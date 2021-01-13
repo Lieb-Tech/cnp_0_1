@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-namespace Medication.MedicationParse
+namespace Common.MedicationParse
 {
     public record MedicationInfo
     {
@@ -60,14 +60,22 @@ namespace Medication.MedicationParse
                 double offset = 0;
                 var nonTag = Tags.Where(t => !t.Contains("{"));
 
+                //if no tags, then get average # of words in the arrays 
                 if (nonTag.Any())
                     offset = nonTag.Average(t => t.Split(" ").Length) + 1;
 
+                // if 1 item is set, but not size
                 if (ItemsSet == 1 && string.IsNullOrEmpty(Size))
                     offset += 1;
 
-                if (!string.IsNullOrEmpty(InferredName))
-                    offset = -1;
+                // if name was inferred or is primary, then good confidence
+                if (!string.IsNullOrEmpty(InferredName) || !string.IsNullOrEmpty(PrimaryName)) 
+                {
+                    if (Tags.Count > 1)
+                        offset = -1.5;
+                    else
+                        offset = 0;
+                }                    
 
                 var value = (Tags.Count + offset) / (double)ItemsSet;
                 return value;

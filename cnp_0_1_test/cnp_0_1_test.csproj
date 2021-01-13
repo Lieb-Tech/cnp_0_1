@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
@@ -22,7 +22,9 @@
   <ItemGroup>
     <ProjectReference Include="..\cnp_0_1\cnp_0_1.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Freeform\Freeform.csproj" />
     <ProjectReference Include="..\Medication\Medication.csproj" />
+    <ProjectReference Include="..\Procedures\Descriptive.csproj" />
   </ItemGroup>
 
 </Project>

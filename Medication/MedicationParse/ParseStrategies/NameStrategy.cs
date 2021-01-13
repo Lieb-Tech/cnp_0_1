@@ -1,7 +1,7 @@
 ﻿
 using Common;
 
-namespace Medication.MedicationParse.ParseStrategies
+namespace Common.MedicationParse.ParseStrategies
 {
     public class NameStrategy : IProcessAndCompletedStrategy<MedicationInfo>
     {

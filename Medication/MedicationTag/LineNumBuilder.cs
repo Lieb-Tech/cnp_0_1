@@ -1,7 +1,7 @@
 ﻿using Common;
 using System.Text.RegularExpressions;
 
-namespace Medication.MedicationTag
+namespace Common.MedicationTag
 {
     // Todo: Split into strategies
     class LineNumBuilder : IStrategy<TextSpan>

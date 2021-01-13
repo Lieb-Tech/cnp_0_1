@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace Medication.MedicationParse.InferredNameStrategies
+namespace Common.MedicationParse.InferredNameStrategies
 {
     class SinglePriorToSecondaryStrategy : IStrategy<MedicationInfo>
     {
@@ -23,6 +23,10 @@ namespace Medication.MedicationParse.InferredNameStrategies
 
             // if multiple words, then this logic doesn't apply
             if (untagged.Tag.Split(" ", StringSplitOptions.RemoveEmptyEntries).Count() > 1)
+                return context;
+
+            // if potential word doesn;t start with capital letter
+            if (untagged.Tag[0] != untagged.Tag.ToUpper()[0])
                 return context;
 
             // if single word, then process it

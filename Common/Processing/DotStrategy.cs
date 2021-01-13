@@ -1,8 +1,11 @@
 ﻿
+using System.Text.RegularExpressions;
+
 namespace Common.Processing
 {
     public class DotStrategy : IStrategy<TextSpan>
-    {        
+    {
+        private readonly Regex _regex = new Regex("[a-zA-Z]\\.([0-9a-zA-Z]|\\s|$)");
         public StrategyContext<TextSpan> Execute(StrategyContext<TextSpan> context)
         {            
             var results = removeDot(context.Data);
@@ -11,8 +14,15 @@ namespace Common.Processing
         }
 
         internal string removeDot(TextSpan text)
-        {            
-            return text.UpdatedText.Replace(".", "");
+        {
+            var updated = text.UpdatedText;            
+            while (_regex.IsMatch(updated))
+            {
+                var match = _regex.Match(updated);
+                updated = updated.Replace(match.Value, match.Value.Replace(".", ""));
+            }
+
+            return updated;
         }
     }
 }

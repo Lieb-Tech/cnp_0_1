@@ -1,6 +1,6 @@
 ﻿using Common;
 
-namespace Medication.MedicationTag
+namespace Common.MedicationTag
 {
     public class PreperationStrategy : IStrategy<TextSpan>
     {

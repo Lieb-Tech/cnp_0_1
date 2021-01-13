@@ -1,8 +1,8 @@
 ﻿using Common;
-using Medication.MedicationParse;
+using Common.MedicationParse;
 using System.Collections.Generic;
 
-namespace Medication
+namespace Common
 {
     /// <summary>
     /// Holds results of tagging and extraction

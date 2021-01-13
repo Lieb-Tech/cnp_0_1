@@ -1,5 +1,5 @@
 ﻿
-namespace Medication
+namespace Common
 {
     public class MedicationProcessor
     {

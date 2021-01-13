@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace Medication.MedicationParse.InferredNameStrategies
+namespace Common.MedicationParse.InferredNameStrategies
 {
     class TextPriorToSecondaryStrategy : IStrategy<MedicationInfo>
     {
@@ -23,6 +23,10 @@ namespace Medication.MedicationParse.InferredNameStrategies
 
             // if blank, or only 1 item, then nothing to process
             if (!values.Any())
+                return context;
+
+            // if potential word doesn;t start with capital letter
+            if (values.Last()[0] != values.Last().ToUpper()[0])
                 return context;
 
             // get the last word in string

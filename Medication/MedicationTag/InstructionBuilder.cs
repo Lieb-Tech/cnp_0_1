@@ -1,7 +1,8 @@
 ﻿using Common;
+using Common.Processing;
 using System.Collections.Generic;
 
-namespace Medication.MedicationTag
+namespace Common.MedicationTag
 {
     public class InstructionBuilder : IStrategy<TextSpan>
     {

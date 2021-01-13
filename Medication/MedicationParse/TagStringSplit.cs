@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Medication.MedicationParse
+namespace Common.MedicationParse
 {
     public class TagStringSplit 
     {

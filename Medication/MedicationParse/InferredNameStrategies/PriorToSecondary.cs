@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Medication.MedicationParse.InferredNameStrategies
+namespace Common.MedicationParse.InferredNameStrategies
 {
     public class PriorToSecondary
     {

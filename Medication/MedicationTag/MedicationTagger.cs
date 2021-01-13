@@ -1,7 +1,7 @@
 ﻿using Common;
 using Common.Processing;
 
-namespace Medication.MedicationTag
+namespace Common.MedicationTag
 {
     public class MedicationTagger
     {
@@ -40,7 +40,7 @@ namespace Medication.MedicationTag
                .Then(new TagRegex("(every day)|(EVERYDAY)", "med:freq:"))
                .Then(new TagRegex("(at bedtime)|(breakfast)", "med:freq:"))
 
-               .Then(new TagRegex("\\s((bid)|(tid)|(QAM)|(QPM)|(qid)|(qd)|(qhs)|(q[0-9]-[0-9]\\s?h)|(q\\s?[0-9]\\s?h))", "med:freq:"))
+               .Then(new TagRegex(@"\s((bid)|(tid)|(QAM)|(QPM)|(qid)|(qd)|(qhs)|(q\s?[0-9]-[0-9]+\s?(h((our)|(rs))(s?)))|(q\s?[0-9]+\s?(h((our)|(rs))(s?))))", "med:freq:"))
 
                .Then(new TagRegex(@"\s(puff(s?))", "med:unit:"))
                .Then(new TagRegex(@"\s(unit(s?))", "med:unit:"))

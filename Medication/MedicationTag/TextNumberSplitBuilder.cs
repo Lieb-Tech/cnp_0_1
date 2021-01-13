@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Medication.MedicationTag
+namespace Common.MedicationTag
 {
     internal class TextNumberSplitBuilder : IStrategy<TextSpan>
     {
@@ -14,7 +14,7 @@ namespace Medication.MedicationTag
             var match = _textNum.Match(text);
             while (match != null && match.Value != "")
             {                
-                if (_skip.Contains(match.Value[1]))
+                if (!_skip.Contains(match.Value[1]))
                     text = text.Substring(0, match.Index + 1) + " " + text.Substring( match.Index + 1);
                 match = _textNum.Match(text, match.Index + 2);
             }

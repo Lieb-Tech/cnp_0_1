@@ -3,7 +3,7 @@ using Common;
 using System;
 using System.Linq.Expressions;
 
-namespace Medication.MedicationParse.ParseStrat2
+namespace Common.MedicationParse.ParseStrat2
 {
     public class QualSetSpecification : Specification<MedicationInfo>
     {

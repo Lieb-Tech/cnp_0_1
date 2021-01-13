@@ -2,7 +2,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Medication.MedicationParse.ParseSpecifications
+namespace Common.MedicationParse.ParseSpecifications
 {
     public class SecondaryNameSpecification : Specification<string>
     {

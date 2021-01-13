@@ -1,20 +1,14 @@
-﻿using Medication.MedicationParse.ParseStrategies;
-using Common;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Medication.MedicationParse.ParseSpecifications
+namespace Common.MedicationParse.ParseSpecifications
 {
-    public record SpecSetStrat(Specification<string> Spec,
-        Specification<MedicationInfo> Set, 
-        IProcessAndCompletedStrategy<MedicationInfo> Strat) { }
-
     public class TagRunner
     {
-        private readonly List<SpecSetStrat> strategies;
+        private readonly List<SpecificationSetStrategy<MedicationInfo>> strategies;
         
         public TagRunner()
         {
-            strategies = new List<SpecSetStrat>();
+            strategies = new List<SpecificationSetStrategy<MedicationInfo>>();
         }
 
         /// <summary>
@@ -25,7 +19,7 @@ namespace Medication.MedicationParse.ParseSpecifications
         /// <param name="strategy">How to process this tag</param>
         public void AddSpecificationStrategy(Specification<string> specification, Specification<MedicationInfo> set, IProcessAndCompletedStrategy<MedicationInfo> strategy)
         {
-            strategies.Add(new SpecSetStrat(specification, set, strategy));
+            strategies.Add(new SpecificationSetStrategy<MedicationInfo>(specification, set, strategy));
         }
         
         /// <summary>
@@ -44,11 +38,11 @@ namespace Medication.MedicationParse.ParseSpecifications
             foreach (var strategy in strategies)
             {
                 // check if this entry is matching
-                if (!strategy.Spec.IsSatisfiedBy(tag))
+                if (!strategy.specification.IsSatisfiedBy(tag))
                     continue;
                 
                 // check if current MedicationInfo has this tag already set
-                if (!strategy.Set.IsSatisfiedBy(context.InProcess))
+                if (!strategy.set.IsSatisfiedBy(context.InProcess))
                 {
                     // if so, start a new one
                     var nextInfo = new MedicationInfo();
@@ -58,7 +52,7 @@ namespace Medication.MedicationParse.ParseSpecifications
                 }
                 
                 // now process it
-                strategy.Strat.Execute(context, tag);
+                strategy.strategy.Execute(context, tag);
                 break;
             }
 

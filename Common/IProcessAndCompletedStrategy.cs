@@ -1,5 +1,5 @@
 ﻿
-namespace Medication.MedicationParse.ParseStrategies
+namespace Common
 {
     public interface IProcessAndCompletedStrategy<T>
     {

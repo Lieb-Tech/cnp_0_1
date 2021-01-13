@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Medication
+namespace Common.Processing
 {
     public class DictionaryReplaceStrategy : IStrategy<TextSpan>
     {
-        private readonly string _tag;
+        private string _tag;
         private readonly Dictionary<string, string> _replacments;
         public DictionaryReplaceStrategy(Dictionary<string, string> replacments, string tag)
         {

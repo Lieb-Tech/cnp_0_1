@@ -1,11 +1,11 @@
-﻿using Medication.MedicationParse.ParseSpecifications;
-using Medication.MedicationParse.ParseStrategies;
+﻿using Common.MedicationParse.ParseSpecifications;
+using Common.MedicationParse.ParseStrategies;
 using Common;
 using System.Collections.Generic;
 using System.Linq;
-using Medication.MedicationParse.ParseStrat2;
+using Common.MedicationParse.ParseStrat2;
 
-namespace Medication.MedicationParse
+namespace Common.MedicationParse
 {
     public class MedicationParser
     {

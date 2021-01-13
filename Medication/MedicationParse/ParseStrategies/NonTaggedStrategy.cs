@@ -1,5 +1,5 @@
 ﻿
-namespace Medication.MedicationParse.ParseStrategies
+namespace Common.MedicationParse.ParseStrategies
 {
     public class NonTaggedStrategy : IProcessAndCompletedStrategy<MedicationInfo>
     {

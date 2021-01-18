@@ -32,10 +32,20 @@ namespace Freeform.FreeformTag
             addValues(Tests, "test");
             addValues(Status, "status");
 
-            addKVP();
+            addValuesWithDash(Location, "loc");
+
+            addKeyValuePairs();
 
             var ordered = _tagInfoes.OrderByDescending(z => z.Key.Split(" ").Length).ThenByDescending(z => z.Key.Length).ToDictionary(z => z.Key, z => z.Value);
             _proceessingStrategy = new DictionaryTagStrategy(ordered);
+        }
+
+        private void addValuesWithDash(ImmutableList<string> values, string key)
+        {
+            foreach (var value in values)
+            {
+                _tagInfoes.Add(value + "-", $"gen:{key}:");
+            }
         }
 
         private void addValues(List<string> values, string key)
@@ -53,7 +63,7 @@ namespace Freeform.FreeformTag
             }
         }
 
-        private void addKVP()
+        private void addKeyValuePairs()
         {
             foreach (var kvp in TagPairs)
             {
@@ -75,34 +85,49 @@ namespace Freeform.FreeformTag
 
         private readonly ImmutableDictionary<string, string> TagPairs = new Dictionary<string, string>()
         {
-            { "also", "Connector" },
-            {"in", "Connector" },
-            {"to", "Connector" },
-            {"and", "Connector" },
-            {"who was", "Connector" },
-            {"with an", "Connector" },
-            {"with a", "Connector" },
-            {"with", "Connector" },
-            {"was", "Connector" },
-            {"of", "Connector" },
-            {"on", "Connector" },
-            {"due to", "Connector" },
-            {"the" , "Connector" },
-            {"had", "Connector" },
-            {"is a" , "Connector" },
-            {"a" , "Connector" },
-            {"an", "Connector" },
-            {"their", "Connector" },
-            {"and at", "Connector" },
-            {"in the", "Connector" },
-            {"need for", "Connector" },
-            {"episodes of", "Connector" },
-            {"including", "Connector" },
-            { "which were", "Connector" },
-            { "were", "Connector" },
+            {"is a" , "link" },
+            {"is" , "link" },
 
-            { "down", "Connector" },
-            { "up", "Connector" },
+            { "also", "connector" },
+            {"in", "connector" },
+            {"to", "connector" },
+            { "as well as", "connector" },
+            // {"was", "connector" },
+            
+            {"with an", "with" },
+            {"with a", "with" },
+            {"with", "with" },
+            { "without", "negative:with" },
+
+            {"on", "connector" },
+            {"due to", "connector" },
+            
+            {"has a", "posses" },
+            {"has", "posses" },
+            {"had a", "posses" },
+            {"had", "posses" },
+            {"their", "posses" },
+
+            {"need for", "connector" },
+            {"episodes of", "connector" },
+            {"including", "connector" },
+            { "which were", "connector" },
+            { "were", "connector" },
+            
+            {"and at", "conjunction" },
+            {"and", "conjunction" },
+
+            { "decrease from", "change" },
+            { "decrease to", "change" },
+            { "decrease", "change" },
+            { "increase from", "change" },
+            { "increase to", "change" },
+            { "increase", "change" },
+
+            { "down from", "change" },
+            { "down to", "change" },
+            { "up to", "change" },
+            { "up from", "change" },
 
             {"within normal limits", "Positive" },
 
@@ -117,28 +142,35 @@ namespace Freeform.FreeformTag
             {"was not", "Negative" },
             {"wasnt", "Negative" },
             {"wasn't", "Negative" },
+            
 
-            {"at this stage", "Temporal" },
-            {"status post", "Temporal" },
-            {"postdialysis" , "Temporal" },
-            {"post", "Temporal" },
-            {"history", "Temporal" },
-            {"history of", "Temporal" },
-            {"before", "Temporal" },
-            {"pre-", "Temporal" },
-            {"pre", "Temporal" },
-            {"Post-operatively", "Temporal" },
-            {"Post-operative", "Temporal" },
-            {"Post operatively", "Temporal" },
-            {"Post operative", "Temporal" },
-            {"Postoperatively", "Temporal" },
-            {"Postoperative", "Temporal" },
-            {"subsequently", "Temporal" },
+            {"at this stage", "time" },
+            {"status post", "time" },
+            {"postdialysis" , "time" },
+            {"post", "time" },
+            {"known", "time" },
+            {"history", "time" },
+            {"history of", "time" },
+            {"before", "time" },
+            {"pre-", "time" },
+            {"pre", "time" },
+            {"Post-operatively", "time" },
+            {"Post-operative", "time" },
+            {"Post operatively", "time" },
+            {"Post operative", "time" },
+            {"Postoperatively", "time" },
+            {"Postoperative", "time" },
+            {"subsequently", "time" },
 
-            {"is married", "Info" },
-            {"is not married", "Info" },
-            {"is single", "Info" },
 
+
+            {"chronic", "time" },
+
+            {"is married", "patient:status" },
+            {"is not married", "patient:status" },
+            {"is single", "patient:status" },
+
+            
             {"attending physician", "physician" },
             {"attending", "physician" },
             {"PCP", "physician" },
@@ -152,15 +184,19 @@ namespace Freeform.FreeformTag
             {"nurse", "physician" },
             {"nurses", "physician" },
 
+            {"who", "patient" },
+            {"they", "patient:pro" },            
             {"patient", "patient" },
             {"patients", "patient" },
-            {"her", "patient" },
-            {"his", "patient" },
-            {"he", "patient" },
-            {"she", "patient" },
+            {"her", "patient:pro" },
+            {"his", "patient:pro" },
+            {"he", "patient:pro" },
+            {"she", "patient:pro" },
+
             {"admitted", "patient" },
             {"admit", "patient" },
 
+            {"measuring","verb" },
             {"kept", "verb" },
             {"keep", "verb" },
             {"complicated", "verb" },
@@ -192,16 +228,17 @@ namespace Freeform.FreeformTag
 
         private readonly ImmutableList<string> Descriptive = new List<string>()
         {
-             "stable",
+            "calcified",
+            "exophytic",
+            "discomfort",
+            "stable",
             "poor",
             "immediate",
             "full",
             "fully",            
             "significant amount",
             "fixation",
-            "decrease",
-            "distended",
-            "chronic",
+            "distended",            
             "fibrosed",
             "swelling",
             "occluded",
@@ -228,10 +265,12 @@ namespace Freeform.FreeformTag
             "equally",
             "round",
             "small",
-        }.ToImmutableList<string>();
+        }.ToImmutableList();
 
         private readonly ImmutableList<string> Location = new List<string>()
         {
+            "in the",
+            "mid",
             "left",
             "right",
             "proximal",
@@ -246,10 +285,14 @@ namespace Freeform.FreeformTag
             "lateral",
             "medial"
 
-        }.ToImmutableList<string>();
+        }.ToImmutableList();
 
         private readonly ImmutableList<string> BodyPart = new List<string>()
         {
+            "uterine",
+            "breast",
+            "pelvic",
+            "pelvis",
             "bladder",
             "tibiofibular",
             "web space",
@@ -286,7 +329,7 @@ namespace Freeform.FreeformTag
             "gastrocnemius",
             "foot"
 
-        }.ToImmutableList<string>();
+        }.ToImmutableList();
 
         private readonly List<string> other = new List<string>() 
         {
@@ -299,6 +342,10 @@ namespace Freeform.FreeformTag
 
         private readonly ImmutableList<string> Procedures = new List<string>() 
         {
+            "lumpectomy",
+            "myomectomy",
+            "tonsillectomy",
+            "adenoidectomy",
             "surgery",
             "Bohler frame",
             "fluid removal",
@@ -319,7 +366,7 @@ namespace Freeform.FreeformTag
             "immobilizer",
             "dressing"
 
-        }.ToImmutableList<string>();
+        }.ToImmutableList();
 
         private readonly ImmutableList<string> Devices = new List<string>()
         {
@@ -330,16 +377,24 @@ namespace Freeform.FreeformTag
             "graft",
             
 
-        }.ToImmutableList<string>();
+        }.ToImmutableList();
 
         private readonly ImmutableList<string> Behaviors = new List<string>()
         {
             "chronic smoker",
             "chronic outpatient dialysis"
-        }.ToImmutableList<string>();
+        }.ToImmutableList();
 
         private readonly List<string> Conditions = new List<string>()
-        {            
+        {
+            "orthostatic dizziness",
+            "jugular venous distention",
+            "systolic ejection murmur", 
+            "fibroma",
+            "pressure",
+            "fundus",            
+            "fibroid",
+            "fibroids",
             "spasm",
             "wound",
             "wounded",
@@ -379,6 +434,11 @@ namespace Freeform.FreeformTag
 
         private readonly List<string> Measurement = new List<string>()
         {
+            "urinalysis",
+            "Vital signs",
+            "Vital sign",
+            "Ultrasound",
+            "heart rate",
             "HEIGHT",
             "HEENT",
             "Potassium",   // 6.3 down to 4.8
@@ -403,11 +463,11 @@ namespace Freeform.FreeformTag
             "plain films",
             "plain film",
 
-        }.ToImmutableList<string>();
+        }.ToImmutableList();
 
         private readonly List<string> Status = new List<string>()
         {
-            "Vital signs",
+            
             "rrr",
             "Regular rate and rhythm",
             "Afebrile",

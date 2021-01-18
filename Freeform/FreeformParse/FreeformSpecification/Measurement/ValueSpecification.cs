@@ -8,7 +8,8 @@ namespace Freeform.FreeformParse.FreeformSpecification.Measurement
     {
         public override Expression<Func<string, bool>> ToExpression()
         {
-            return text => text.Contains("num", StringComparison.InvariantCultureIgnoreCase);
+            return text => text.Contains(":num", StringComparison.InvariantCultureIgnoreCase)
+                || text.Contains(":descr", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

@@ -7,6 +7,9 @@
             if (text == null)
                 return null;
 
+            if (!text.Contains("{"))
+                return null;
+
             int idx = text.LastIndexOf(":");
             if (idx == -1)
                 return null;

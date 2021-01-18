@@ -1,10 +1,9 @@
-﻿using Common;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
-namespace Common.MedicationTag
+namespace Common
 {
     // Todo: Split into strategies
-    class LineNumBuilder : IStrategy<TextSpan>
+    public class LineNumBuilder : IStrategy<TextSpan>
     {
         private readonly Regex _dotSpace = new Regex(@"^(\d{1,2}\.\s?)");
         private readonly Regex _space = new Regex(@"^(\d{1,2}\s?)");

@@ -1,8 +1,8 @@
 ﻿namespace Common.DecisionTree
 {
-    public class DecisionResult<T>: Decision<T>
+    public class PositiveDecisionResult<T> : Decision<T>
     {
-        public bool Result { get; set; }
+        public bool Result => true;
 
         public override void Evaluate(T Client)
         {

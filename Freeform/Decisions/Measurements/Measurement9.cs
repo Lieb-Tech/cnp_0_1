@@ -3,13 +3,13 @@ using Common.DecisionTree;
 using Common.DecisionTree.DecisionQueries;
 using Freeform.FreeformParse;
 
-namespace Freeform.Decisions.Conditions
+namespace Freeform.Decisions.Measurements
 {
-    public class Condition2 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
+    public class Measurement9 : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
-        public IStrategy<TextSpanInfoes<ConditionInfo>> GetDecision(DecisionContext data)
+        public IStrategy<TextSpanInfoes<MeasurementInfo>> GetDecision(DecisionContext data)
         {
             data = data with { Index = 0, Matched = false };
             trunk.Evaluate(data);
@@ -21,25 +21,23 @@ namespace Freeform.Decisions.Conditions
         }
 
         /// <summary>
-        /// <summary>
-        /// {gen:descriptive:CC} {gen:condition:CCC}
-        /// {gen:time:Chronic} {gen:condition:adenopathy}
+        /// specific use case
+        /// {gen:measure:vital signs} {gen:descriptive:stable} .
         /// </summary>
 
-        /// </summary>
-        public Condition2()
+        public Measurement9()
         {
-            var step2 = new IsTagOfType("condition", 1,
-                "is a condition",
+            var step2 = new IsTagOfType("descriptive", 1,
+                "descriptive",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step1 = new FirstTagHasValue("chronic",
-                "is a chronic",
+            var step1 = new FirstTagOfType("measure",
+                "is measure type",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 
-            trunk = new NumberOfTags(2,
+            trunk = new NumberOfTags(3,
                 "number of tags = 2",
                 step1,
                 DecisionResults<ITaggedData>.GetNegative());

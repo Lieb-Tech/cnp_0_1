@@ -3,6 +3,6 @@ namespace Common
 {
     public interface IProcessAndCompletedStrategy<T>
     {
-        ProcessAndCompletedContext<T> Execute(ProcessAndCompletedContext<T> context, string tag);
+        InprocessAndCompleted<T> Execute(InprocessAndCompleted<T> context, string tag);
     }
 }

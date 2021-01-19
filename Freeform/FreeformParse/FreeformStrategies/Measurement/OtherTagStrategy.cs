@@ -5,7 +5,7 @@ namespace Freeform.FreeformParse.FreeformStrategies.Measurement
 {
     public class OtherTagStrategy : IProcessAndCompletedStrategy<MeasurementInfo>
     {
-        public ProcessAndCompletedContext<MeasurementInfo> Execute(ProcessAndCompletedContext<MeasurementInfo> context, string tag)
+        public InprocessAndCompleted<MeasurementInfo> Execute(InprocessAndCompleted<MeasurementInfo> context, string tag)
         {
             var connector = context.InProcess.Connector;
             connector += " " + tag.TagValue();

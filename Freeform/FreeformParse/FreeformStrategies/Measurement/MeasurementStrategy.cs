@@ -4,7 +4,7 @@ namespace Freeform.FreeformParse.FreeformStrategies.Measurement
 {
     public class MeasurementStrategy : IProcessAndCompletedStrategy<MeasurementInfo>
     {
-        public ProcessAndCompletedContext<MeasurementInfo> Execute(ProcessAndCompletedContext<MeasurementInfo> context, string tag)
+        public InprocessAndCompleted<MeasurementInfo> Execute(InprocessAndCompleted<MeasurementInfo> context, string tag)
         {
             context.InProcess = context.InProcess with { Measurement = tag.TagValue() };
             return context;

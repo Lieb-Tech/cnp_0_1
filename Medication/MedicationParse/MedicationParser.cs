@@ -210,7 +210,7 @@ namespace Common.MedicationParse
         /// <returns></returns>
         internal List<MedicationInfo> processTags(List<string> tags)
         {
-            ProcessAndCompletedContext<MedicationInfo> context = new() { InProcess = new MedicationInfo() };
+            InprocessAndCompleted<MedicationInfo> context = new() { InProcess = new MedicationInfo() };
 
             // pass on to TagRunnger to proces the tag
             foreach (var tag in tags) 

@@ -28,7 +28,7 @@ namespace Common.MedicationParse.ParseSpecifications
         /// <param name="context"></param>
         /// <param name="tag"></param>
         /// <returns></returns>
-        public ProcessAndCompletedContext<MedicationInfo> ProcessTag(ProcessAndCompletedContext<MedicationInfo> context, string tag)
+        public InprocessAndCompleted<MedicationInfo> ProcessTag(InprocessAndCompleted<MedicationInfo> context, string tag)
         {
             // skip ListItem
             if (tag.Contains("gen:li") || tag.Contains("med:li"))

@@ -5,7 +5,7 @@ namespace Common.MedicationParse.ParseStrategies
 {
     public class MethodStrategy : IProcessAndCompletedStrategy<MedicationInfo>
     {
-        public ProcessAndCompletedContext<MedicationInfo> Execute(ProcessAndCompletedContext<MedicationInfo> context, string tag)
+        public InprocessAndCompleted<MedicationInfo> Execute(InprocessAndCompleted<MedicationInfo> context, string tag)
         {
             if (context.InProcess.Method != null)
             {

@@ -5,7 +5,7 @@ namespace Common.MedicationParse.ParseStrategies
 {
     public class UnitStrategy : IProcessAndCompletedStrategy<MedicationInfo>
     {
-        public ProcessAndCompletedContext<MedicationInfo> Execute(ProcessAndCompletedContext<MedicationInfo> context, string tag)
+        public InprocessAndCompleted<MedicationInfo> Execute(InprocessAndCompleted<MedicationInfo> context, string tag)
         {
             context.InProcess = context.InProcess with { Unit = tag.TagValue() };
             return context;

@@ -1,5 +1,9 @@
 ﻿namespace Common
 {
+    /// <summary>
+    /// Base class for fluent chaining of Strategies
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ChainedStrategy<T> : IStrategy<T>
     {
         protected readonly IStrategy<T> _first;

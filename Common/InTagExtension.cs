@@ -1,18 +1,27 @@
 ﻿
 namespace Common
 {
+    /// <summary>
+    /// Extension class to help prevent inccorect subtagging
+    /// </summary>
     public static class InTagExtension
     {
-        public static bool IsInTag(this string text, int pos)
+        /// <summary>
+        /// Determine if the position index provided is within a Tag
+        /// </summary>
+        /// <param name="text">String of text being examined</param>
+        /// <param name="index">Position to check</param>
+        /// <returns></returns>
+        public static bool IsInTag(this string text, int index)
         {   
             // if not valid position
-            if (pos < 0)
+            if (index < 0)
                 return false;
 
             // find { closest before index
-            var openIdx = text.LastIndexOf("{", pos);
+            var openIdx = text.LastIndexOf("{", index);
             // find } closest before index
-            var endIdx = text.LastIndexOf("}", pos);
+            var endIdx = text.LastIndexOf("}", index);
 
             // if { not found, then not in tag
             if (openIdx == -1)

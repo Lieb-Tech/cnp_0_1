@@ -5,7 +5,7 @@ namespace Common.MedicationParse.ParseStrategies
 {
     public class FrequencyStrategy : IProcessAndCompletedStrategy<MedicationInfo>
     {
-        public ProcessAndCompletedContext<MedicationInfo> Execute(ProcessAndCompletedContext<MedicationInfo> context, string tag)
+        public InprocessAndCompleted<MedicationInfo> Execute(InprocessAndCompleted<MedicationInfo> context, string tag)
         {
             if (tag.Contains("Q"))
                 context.InProcess = context.InProcess with {  Frequency = tag.TagValue().Replace(" ","") };

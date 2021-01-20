@@ -16,5 +16,7 @@ namespace Common.DecisionTree
         // orignal Span
         public int Index { get; set; }
 
+        // extra info for 
+        public dynamic Baggage { get; set; }
     }
 }

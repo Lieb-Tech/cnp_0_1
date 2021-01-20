@@ -37,7 +37,7 @@ namespace Freeform.Decisions.Measurements
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 
-            trunk = new NumberOfTags(3,
+            trunk = new NumberOfTags(2,
                 "number of tags = 2",
                 step1,
                 DecisionResults<ITaggedData>.GetNegative());

@@ -1,4 +1,5 @@
 
+using Medication;
 using Xunit;
 
 namespace cnp_0_1_test
@@ -28,7 +29,7 @@ namespace cnp_0_1_test
         
         public void Test1(int num, string input)
         {            
-            var medParse = new Common.MedicationProcessor();
+            var medParse = new MedicationProcessor();
             var result = medParse.Process(input);
 
             Assert.Equal(num, result.medications.Count);
@@ -40,7 +41,7 @@ namespace cnp_0_1_test
 
         public void Test2()
         {
-            var medParse = new Common.MedicationProcessor();
+            var medParse = new MedicationProcessor();
             string input = "FLOMAX( TAMSULOSIN ) 0.4 MG PO QD BACITRACIN TOPICAL TP BID";
             var result = medParse.Process(input);
 
@@ -56,7 +57,7 @@ namespace cnp_0_1_test
         [Theory]
         public void Test3(string extracted, string input)
         {
-            var medParse = new Common.MedicationProcessor();
+            var medParse = new MedicationProcessor();
             var result = medParse.Process(input);
             
             Assert.Equal(extracted, result.medications[0].SecondaryName);
@@ -65,7 +66,7 @@ namespace cnp_0_1_test
         [Fact]
         public void Test4()
         {            
-            var medParse = new Common.MedicationProcessor();
+            var medParse = new MedicationProcessor();
 
             string input = "1. Aspirin 81 mg every day .";
             var result = medParse.Process(input);

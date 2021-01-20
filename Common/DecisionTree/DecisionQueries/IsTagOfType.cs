@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Common.DecisionTree.DecisionQueries
 {
     public class IsTagOfType : DecisionQuery<ITaggedData>

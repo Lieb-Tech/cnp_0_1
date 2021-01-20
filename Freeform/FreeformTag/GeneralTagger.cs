@@ -385,6 +385,12 @@ namespace Freeform.FreeformTag
 
         private readonly List<string> Conditions = new List<string>()
         {
+            "kidney stones",
+            "stones",
+            "hepatitis",
+            "urinary tract infection",
+            "cirrhosis of the liver",
+            "cirrhosis",
             "cancer",
             "orthostatic dizziness",
             "jugular venous distention",

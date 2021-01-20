@@ -27,7 +27,7 @@ namespace cnp_0_1_test
             var gen = new Freeform.FreeformTag.GeneralTagger();
             info = gen.ProcessLine(info);
 
-            var parse = new Freeform.FreeformParse.MeasurementParse();
+            var parse = new Freeform.FreeformParse.MeasurementTreeParse();
             parse.ProcessLine(info);
 
             Assert.NotNull(info);

@@ -14,8 +14,10 @@ namespace Medication.MedicationTag
             genericBuilder = new TextToNumberStrategy()
                 .Then(new DateBuilder())
                 .Then(new TagRegex(@"(\d{1,2}/\d{1,2}/\d{2,4})( \d{1,2}:\d{2}(:\d{0,2})? [AaPp][Mm])", "gen:datetime:"))
-                .Then(new TagRegex(@"\d{1,2}:\d{1,2}:\d{2,4} [AaPp][Mm]", "gen:time:"))
-                .Then(new TagRegex(@"(\d{1,2}/\d{1,2}/\d{2,4})", "gen:date:"));
+                .Then(new TagRegex(@"(\d{1,2}/\d{1,2}/\d{2,4})", "gen:date:"))
+
+                .Then(new TagRegex(@"\d{1,2}:\d{1,2}:\d{2,4} [AaPp][Mm]", "gen:time:"));
+                
 
             // tag medication info
             medBuilder = new LineNumBuilder()  // take care of numbered list items

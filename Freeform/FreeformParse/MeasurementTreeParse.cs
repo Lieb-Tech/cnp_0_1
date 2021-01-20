@@ -10,7 +10,9 @@ namespace Freeform.FreeformParse
 {
     public class MeasurementTreeParse
     {
+        // descision trees for only tagged items
         private readonly List<IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>> taggedForest = new();
+        // decision trees using all entries in tags
         private readonly List<IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>> allForest = new();
         public MeasurementTreeParse()
         {
@@ -21,6 +23,8 @@ namespace Freeform.FreeformParse
         {
             allForest.Add(new Measurement9());
 
+            taggedForest.Add(new Measurement11());
+            taggedForest.Add(new Measurement10());
             taggedForest.Add(new Measurement8());
             taggedForest.Add(new Measurement7());
             taggedForest.Add(new Measurement6());

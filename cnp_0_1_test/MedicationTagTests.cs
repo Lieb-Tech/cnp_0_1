@@ -1,5 +1,6 @@
 ﻿
-using Common.MedicationParse;
+using Medication;
+using Medication.MedicationParse;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -229,7 +230,7 @@ namespace cnp_0_1_test
         [Fact]
         public void MedsExtracted()
         {
-            var medParse = new Common.MedicationProcessor();
+            var medParse = new MedicationProcessor();
 
             foreach (var med in meds)
             {
@@ -242,7 +243,7 @@ namespace cnp_0_1_test
         [Fact]
         public void NameTests()
         {
-            var medParse = new Common.MedicationProcessor();
+            var medParse = new MedicationProcessor();
 
             foreach (var med in meds)
             {
@@ -263,7 +264,7 @@ namespace cnp_0_1_test
         [Fact]
         public void SizeTests()
         {
-            var medParse = new Common.MedicationProcessor();
+            var medParse = new MedicationProcessor();
 
             foreach (var med in meds)
             {
@@ -284,7 +285,7 @@ namespace cnp_0_1_test
         [Fact]
         public void UnitTests()
         {
-            var medParse = new Common.MedicationProcessor();
+            var medParse = new MedicationProcessor();
 
             foreach (var med in meds)
             {
@@ -305,7 +306,7 @@ namespace cnp_0_1_test
         [Fact]
         public void MethodTests()
         {
-            var medParse = new Common.MedicationProcessor();
+            var medParse = new MedicationProcessor();
 
             foreach (var med in meds)
             {
@@ -326,7 +327,7 @@ namespace cnp_0_1_test
         [Fact]
         public void FrequencyTests()
         {
-            var medParse = new Common.MedicationProcessor();
+            var medParse = new MedicationProcessor();
 
             foreach (var med in meds)
             {

@@ -1,7 +1,5 @@
-﻿using Common;
-using Common.Processing;
-
-namespace Medication.MedicationTag
+﻿
+namespace Common.Processing
 {
     public class DateBuilder : IStrategy<TextSpan>
     {

@@ -5,21 +5,23 @@ namespace Freeform.FreeformTag
 {
     public class PatternTagger
     {
-        private readonly IStrategy<TextSpan> preProcess;
+        private readonly IStrategy<TextSpan> postProcess;
         private readonly IStrategy<TextSpan> process;
 
         public PatternTagger()
         {
-            preProcess = new DotStrategy()
+            postProcess = new TagRegex(@"(\d+\/\d+)\s?,?\s?\d+\.?\d+\s?,?\s?\d+\s?,?\s?\d+", "gen:vitals")
+                .Then(new DotStrategy())
                 .Then(new LineNumBuilder())
+                .Then(new DateBuilder())
                 .Then(new TagRegex(@"(\s?\d+\.?\d?(\s?)x?)+(centimeter(s?))|(cm(s?))|(millimeter(s?))|(mm(s?))", "gen:num"))
                 .Then(new TagRegex(@"(([1-9][0-9])|([1-9]))(st|nd|rd|th)", "gen:num"))   // 1st, 2nd
                 .Then(new TagRegex(@"(([0-9]+\-[0-9]+)|[0-9]+) range", "gen:num"))   //range
                 .Then(new TagRegex(@"[0-9]+\+", "gen:num"))    // 1+
 
-                .Then(new TagRegex(@"[0-9]+\s?(\\|/|-|to)\s?[0-9]+", "med:num:"))
-                .Then(new TagRegex(@"([0-9]+,)*[0-9]+(\.[0-9]+)?", "med:num:"))
-                .Then(new TagRegex(@"[0-9]+", "med:num:"));
+                .Then(new TagRegex(@"[0-9]+\s?(\\|\/|-|to)\s?[0-9]+", "gen:num:"))
+                .Then(new TagRegex(@"([0-9]+,)*[0-9]+(\.[0-9]+)?", "gen:num:"))
+                .Then(new TagRegex(@"[0-9]+", "gen:num:"));
 
 
             process = new TagRegex(@"Gravida [0-9]{1,2}(\s?Para ([0-9]{1,2})([0-9]{1,2})([0-9]{1,2})([0-9]{1,2}))?", "gen:maternity")
@@ -36,7 +38,7 @@ namespace Freeform.FreeformTag
             var txt = new TextSpan(line, line);
             var ctx = new StrategyContext<TextSpan>(txt, true);
             ctx = process.Execute(ctx);
-            ctx = preProcess.Execute(ctx);
+            ctx = postProcess.Execute(ctx);
             return ctx.Data;
         }
     }

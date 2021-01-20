@@ -2,8 +2,12 @@
 using Common.Processing;
 using System.Collections.Generic;
 
-namespace Common.MedicationTag
+namespace Medication.MedicationTag
 {
+    /// <summary>
+    /// Tag medications by their name
+    /// Eventually would be database driven
+    /// </summary>
     public class MedicationNameBuilder : IStrategy<TextSpan>
     {        
         public StrategyContext<TextSpan> Execute(StrategyContext<TextSpan> context)

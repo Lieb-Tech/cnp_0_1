@@ -2,9 +2,9 @@
 using System;
 using System.Linq;
 
-namespace Common.MedicationParse.InferredNameStrategies
+namespace Medication.MedicationParse.InferredNameStrategies
 {
-    class TextPriorToSecondaryStrategy : IStrategy<MedicationInfo>
+    public class TextPriorToSecondaryStrategy : IStrategy<MedicationInfo>
     {
         public StrategyContext<MedicationInfo> Execute(StrategyContext<MedicationInfo> context)
         {

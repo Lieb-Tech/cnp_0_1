@@ -2,8 +2,11 @@
 using Common.Processing;
 using System.Collections.Generic;
 
-namespace Common.MedicationTag
+namespace Medication.MedicationTag
 {
+    /// <summary>
+    /// tag instructions for taking medication 
+    /// </summary>
     public class InstructionBuilder : IStrategy<TextSpan>
     {
         private readonly DictionaryReplaceStrategy dictionaryReplaceStrategy;

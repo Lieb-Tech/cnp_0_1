@@ -1,9 +1,8 @@
 ﻿using Common;
-using Common.MedicationParse.InferredNameStrategies;
-using System.Collections.Generic;
+using Medication.MedicationParse.InferredNameStrategies;
 using System.Linq;
 
-namespace Common.MedicationParse.ParseStrategies
+namespace Medication.MedicationParse.ParseStrategies
 {
     public class NameExtractionStrategy : IStrategy<MedicationInfo>
     {

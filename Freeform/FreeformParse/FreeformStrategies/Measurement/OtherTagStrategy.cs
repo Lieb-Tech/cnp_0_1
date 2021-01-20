@@ -3,7 +3,7 @@ using Common;
 
 namespace Freeform.FreeformParse.FreeformStrategies.Measurement
 {
-    public class OtherTagStrategy : IProcessAndCompletedStrategy<MeasurementInfo>
+    public class OtherTagStrategy : IInprocessAndCompletedStrategy<MeasurementInfo>
     {
         public InprocessAndCompleted<MeasurementInfo> Execute(InprocessAndCompleted<MeasurementInfo> context, string tag)
         {

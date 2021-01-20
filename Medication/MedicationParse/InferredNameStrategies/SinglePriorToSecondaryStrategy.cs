@@ -2,9 +2,9 @@
 using System;
 using System.Linq;
 
-namespace Common.MedicationParse.InferredNameStrategies
+namespace Medication.MedicationParse.InferredNameStrategies
 {
-    class SinglePriorToSecondaryStrategy : IStrategy<MedicationInfo>
+    public class SinglePriorToSecondaryStrategy : IStrategy<MedicationInfo>
     {
         /// <summary>
         /// Given: Primary name is not tagged

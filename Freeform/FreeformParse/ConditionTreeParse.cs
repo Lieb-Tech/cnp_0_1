@@ -18,6 +18,8 @@ namespace Freeform.FreeformParse
 
         void plantForest()
         {
+            forest.Add(new Condition4());
+            forest.Add(new Condition3());
             forest.Add(new Condition2());
             forest.Add(new Condition1());
         }

@@ -1,7 +1,7 @@
 ﻿using Common;
 using Common.Processing;
 
-namespace Common.MedicationTag
+namespace Medication.MedicationTag
 {
     public class MedicationTagger
     {
@@ -10,21 +10,26 @@ namespace Common.MedicationTag
 
         public MedicationTagger()
         {
-            genericBuilder = new TextToNumberStrategy()                
+            // tag non-medication items that might be mis-interpreted
+            genericBuilder = new TextToNumberStrategy()
+                .Then(new DateBuilder())
                 .Then(new TagRegex(@"(\d{1,2}/\d{1,2}/\d{2,4})( \d{1,2}:\d{2}(:\d{0,2})? [AaPp][Mm])", "gen:datetime:"))
                 .Then(new TagRegex(@"\d{1,2}:\d{1,2}:\d{2,4} [AaPp][Mm]", "gen:time:"))
                 .Then(new TagRegex(@"(\d{1,2}/\d{1,2}/\d{2,4})", "gen:date:"));
 
-            medBuilder = new LineNumBuilder()                
-                .Then(new DotStrategy())
+            // tag medication info
+            medBuilder = new LineNumBuilder()  // take care of numbered list items
+                .Then(new DotStrategy())    // remove dots (periods) except if it's a decimal
+                .Then(new CommaStrategy())    // remove dots (periods) except if it's a decimal
 
-               .Then(new TimesADayBuilder())
-               .Then(new InstructionBuilder())
+               .Then(new TimesADayBuilder())  // tag 2x day type of entries
+               .Then(new InstructionBuilder())  // tag "with meal" type of entries
 
-               .Then(new TextNumberSplitBuilder())
+               .Then(new TextNumberSplitBuilder()) // 
 
                .Then(new TagRegex("prn [a-z]* pain", "med:qual:"))
-               .Then(new TagRegex("(prn pain)|(prn)", "med:qual:"))
+               .Then(new TagRegex("(prn pain)|(prn)|(as needed (for pain)?)", "med:qual:"))
+               
 
                .Then(new TagRegex("\\s((SC)|(topical tp)|(TP))\\s", "med:format:"))
                .Then(new TagRegex("\\s((po)|(sublingual)|(iv)|(oral(ly)?))\\s", "med:format:"))
@@ -34,7 +39,7 @@ namespace Common.MedicationTag
 
                .Then(new TagRegex("[qQ][0-9]\\s?[DdHhMm]", "med:freq:"))
                .Then(new TagRegex("([Qq][0-9]-[0-9]\\s?[hH])", "med:freq:"))
-               .Then(new TagRegex("((every)\\s?[0-9]-[0-9]\\s?((hr(s)?)|(h))?)", "med:freq:"))
+               .Then(new TagRegex(@"((every)\s?[0-9](-[0-9])?\s?((hour(s)?|hr(s)?)|(h))?)", "med:freq:"))
 
                .Then(new TagRegex("(per day)|(PER DAY)", "med:freq:"))
                .Then(new TagRegex("(every day)|(EVERYDAY)", "med:freq:"))

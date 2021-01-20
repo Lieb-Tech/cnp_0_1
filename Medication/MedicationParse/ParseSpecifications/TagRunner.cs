@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Common;
+using System.Collections.Generic;
 
-namespace Common.MedicationParse.ParseSpecifications
+namespace Medication.MedicationParse.ParseSpecifications
 {
+    /// <summary>
+    /// Process the string of text
+    /// </summary>
     public class TagRunner
     {
-        private readonly List<SpecificationSetStrategy<MedicationInfo>> strategies;
-        
-        public TagRunner()
-        {
-            strategies = new List<SpecificationSetStrategy<MedicationInfo>>();
-        }
+        // processing strategies
+        private readonly List<SpecificationSetStrategy<MedicationInfo>> strategies = new();              
 
         /// <summary>
         /// Process a tag value, setting the respective value in the Medication object
@@ -17,7 +17,7 @@ namespace Common.MedicationParse.ParseSpecifications
         /// <param name="specification">Should this tag be processed</param>
         /// <param name="set">Has this tag already been set in the current medication</param>
         /// <param name="strategy">How to process this tag</param>
-        public void AddSpecificationStrategy(Specification<string> specification, Specification<MedicationInfo> set, IProcessAndCompletedStrategy<MedicationInfo> strategy)
+        public void AddSpecificationStrategy(Specification<string> specification, Specification<MedicationInfo> set, IInprocessAndCompletedStrategy<MedicationInfo> strategy)
         {
             strategies.Add(new SpecificationSetStrategy<MedicationInfo>(specification, set, strategy));
         }

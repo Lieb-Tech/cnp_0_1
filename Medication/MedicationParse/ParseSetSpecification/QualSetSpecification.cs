@@ -1,9 +1,8 @@
-﻿
-using Common;
+﻿using Common;
 using System;
 using System.Linq.Expressions;
 
-namespace Common.MedicationParse.ParseStrat2
+namespace Medication.MedicationParse.ParseStrat2
 {
     public class QualSetSpecification : Specification<MedicationInfo>
     {

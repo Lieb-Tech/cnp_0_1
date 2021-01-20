@@ -1,8 +1,10 @@
-﻿using Common.Processing;
+﻿using Common;
+using Common.Processing;
 using System.Collections.Generic;
 
-namespace Common.MedicationTag
+namespace Medication.MedicationTag
 {
+    // tag "x times a day" parts
     public class TimesADayBuilder : IStrategy<TextSpan>
     {
         private readonly DictionaryReplaceStrategy dictionaryReplaceStrategy;

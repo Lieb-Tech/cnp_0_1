@@ -1,7 +1,7 @@
 ﻿
 namespace Common
 {
-    public interface IProcessAndCompletedStrategy<T>
+    public interface IInprocessAndCompletedStrategy<T>
     {
         InprocessAndCompleted<T> Execute(InprocessAndCompleted<T> context, string tag);
     }

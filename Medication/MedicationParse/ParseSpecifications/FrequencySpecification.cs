@@ -2,7 +2,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Common.MedicationParse.ParseSpecifications
+namespace Medication.MedicationParse.ParseSpecifications
 {
     public class FrequencySpecification : Specification<string>
     {

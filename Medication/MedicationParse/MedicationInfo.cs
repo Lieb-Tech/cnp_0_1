@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Common;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Common.MedicationParse
+namespace Medication.MedicationParse
 {
+    // Object for medication
     public record MedicationInfo
     {
         public List<string> Tags { get; set; }
@@ -85,7 +87,7 @@ namespace Common.MedicationParse
         public void UpdateTags()
         {
             TagStringSplit tss = new TagStringSplit();
-            Tags = tss.Execute(OriginalText);
+            Tags = tss.Split(OriginalText);
         }
 
         public int ItemsSet

@@ -1,8 +1,7 @@
 ﻿using Common;
-using System;
 using System.Linq;
 
-namespace Common.MedicationParse.InferredNameStrategies
+namespace Medication.MedicationParse.InferredNameStrategies
 {
     public class UntaggedFirstTagStrategy : IStrategy<MedicationInfo>
     {
@@ -24,6 +23,9 @@ namespace Common.MedicationParse.InferredNameStrategies
 
             // if blank, or only 1 item, then nothing to process
             if (!values.Any())
+                return context;
+
+            if (!char.IsLetter(values.Last()[0]))
                 return context;
 
             // if potential word doesn;t start with capital letter

@@ -1,7 +1,9 @@
 ﻿
-namespace Common.MedicationParse.ParseStrategies
+using Common;
+
+namespace Medication.MedicationParse.ParseStrategies
 {
-    public class NonTaggedStrategy : IProcessAndCompletedStrategy<MedicationInfo>
+    public class NonTaggedStrategy : IInprocessAndCompletedStrategy<MedicationInfo>
     {
         public InprocessAndCompleted<MedicationInfo> Execute(InprocessAndCompleted<MedicationInfo> context, string tag)
         {

@@ -1,11 +1,11 @@
-﻿using Common.MedicationParse.ParseSpecifications;
-using Common.MedicationParse.ParseStrategies;
-using Common;
+﻿using Common;
 using System.Collections.Generic;
 using System.Linq;
-using Common.MedicationParse.ParseStrat2;
+using Medication.MedicationParse.ParseStrategies;
+using Medication.MedicationParse.ParseSpecifications;
+using Medication.MedicationParse.ParseStrat2;
 
-namespace Common.MedicationParse
+namespace Medication.MedicationParse
 {
     public class MedicationParser
     {
@@ -191,7 +191,7 @@ namespace Common.MedicationParse
         {
             // split text into parts -- individual tagged items + span of untagged
             TagStringSplit tss = new();
-            var tags = tss.Execute(span.UpdatedText);
+            var tags = tss.Split(span.UpdatedText);
 
             // if no tagged in string, then just move on
             if (!tags.Any(z => z.Contains("med:")))

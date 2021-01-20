@@ -91,8 +91,7 @@ namespace Freeform.FreeformTag
             { "also", "connector" },
             {"in", "connector" },
             {"to", "connector" },
-            { "as well as", "connector" },
-            // {"was", "connector" },
+            { "as well as", "connector" },            
             
             {"with an", "with" },
             {"with a", "with" },
@@ -143,7 +142,6 @@ namespace Freeform.FreeformTag
             {"wasnt", "Negative" },
             {"wasn't", "Negative" },
             
-
             {"at this stage", "time" },
             {"status post", "time" },
             {"postdialysis" , "time" },
@@ -162,14 +160,11 @@ namespace Freeform.FreeformTag
             {"Postoperative", "time" },
             {"subsequently", "time" },
 
-
-
             {"chronic", "time" },
 
             {"is married", "patient:status" },
             {"is not married", "patient:status" },
             {"is single", "patient:status" },
-
             
             {"attending physician", "physician" },
             {"attending", "physician" },
@@ -228,6 +223,7 @@ namespace Freeform.FreeformTag
 
         private readonly ImmutableList<string> Descriptive = new List<string>()
         {
+            "heavy",
             "calcified",
             "exophytic",
             "discomfort",
@@ -289,6 +285,7 @@ namespace Freeform.FreeformTag
 
         private readonly ImmutableList<string> BodyPart = new List<string>()
         {
+            "colon",
             "uterine",
             "breast",
             "pelvic",
@@ -381,12 +378,14 @@ namespace Freeform.FreeformTag
 
         private readonly ImmutableList<string> Behaviors = new List<string>()
         {
-            "chronic smoker",
-            "chronic outpatient dialysis"
+            "alcohol use",
+            "smoker",
+            "outpatient dialysis"
         }.ToImmutableList();
 
         private readonly List<string> Conditions = new List<string>()
         {
+            "cancer",
             "orthostatic dizziness",
             "jugular venous distention",
             "systolic ejection murmur", 

@@ -2,7 +2,7 @@
 
 namespace Freeform.FreeformParse.FreeformStrategies.Measurement
 {
-    public class MeasurementStrategy : IProcessAndCompletedStrategy<MeasurementInfo>
+    public class MeasurementStrategy : IInprocessAndCompletedStrategy<MeasurementInfo>
     {
         public InprocessAndCompleted<MeasurementInfo> Execute(InprocessAndCompleted<MeasurementInfo> context, string tag)
         {

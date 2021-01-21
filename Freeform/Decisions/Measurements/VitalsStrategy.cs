@@ -9,7 +9,7 @@ namespace Freeform.Decisions.Measurements
     public class VitalsStrategy : RemoveTagsStrategy<MeasurementInfo>
     {
         private readonly bool numFirst = false;
-        public VitalsStrategy(int offset, bool numFirst) : base(3)
+        public VitalsStrategy(int offset, bool numFirst) : base(3, offset)
         {
             this.numFirst = numFirst;
             Offset = offset;

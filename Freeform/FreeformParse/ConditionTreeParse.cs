@@ -10,7 +10,8 @@ namespace Freeform.FreeformParse
 {
     public class ConditionTreeParse
     {
-        private readonly List<IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>> forest = new();
+        private readonly List<IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>> taggedForest = new();
+        private readonly List<IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>> allForest = new();
         public ConditionTreeParse()
         {
             plantForest();
@@ -18,10 +19,13 @@ namespace Freeform.FreeformParse
 
         void plantForest()
         {
-            forest.Add(new Condition4());
-            forest.Add(new Condition3());
-            forest.Add(new Condition2());
-            forest.Add(new Condition1());
+            taggedForest.Add(new Condition7());
+            taggedForest.Add(new Condition6());
+            taggedForest.Add(new Condition5());
+            taggedForest.Add(new Condition4());
+            taggedForest.Add(new Condition3());
+            taggedForest.Add(new Condition2());
+            taggedForest.Add(new Condition1());
         }
 
         public List<ConditionInfo> ProcessLine(TextSpan span)
@@ -34,10 +38,10 @@ namespace Freeform.FreeformParse
             TagStringSplit tss = new();
             var tags = tss.SplitTagged(span.UpdatedText);
 
-            // for processing after match
+            // initial value for processing context
             var tsp = new TextSpanInfoes<ConditionInfo>(span,
                 ImmutableList<ConditionInfo>.Empty,
-                tags.ToImmutableList());
+                 tags.ToImmutableList());
 
             var ctx = new StrategyContext<TextSpanInfoes<ConditionInfo>>(tsp, true);
 
@@ -67,7 +71,7 @@ namespace Freeform.FreeformParse
             };
 
             // now check for matches, and then process
-            foreach (var tree in forest)
+            foreach (var tree in taggedForest)
             {
                 // get result from tree
                 var result = tree.GetDecision(md with { });

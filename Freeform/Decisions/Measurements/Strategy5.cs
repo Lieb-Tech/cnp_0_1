@@ -5,21 +5,22 @@ using System.Linq;
 
 namespace Freeform.Decisions.Measurements
 {
-    public class Strategy1 : RemoveTagsStrategy<MeasurementInfo>
+    public class Strategy5 : RemoveTagsStrategy<MeasurementInfo>
     {
-        public Strategy1(int offset): base(1, offset)
+        public Strategy5(int offset) : base(3, offset)
         {
             Offset = offset;
         }
         public int Offset { get; set; }
+
         public override StrategyContext<TextSpanInfoes<MeasurementInfo>> Execute(StrategyContext<TextSpanInfoes<MeasurementInfo>> context)
         {
-            var info = new MeasurementInfo(context.Data.TagsToProcess[Offset].TagValue(),
-                null, null, null);
-
+            var info = new MeasurementInfo(context.Data.TagsToProcess[Offset + 1].TagValue(),
+                context.Data.TagsToProcess[Offset + 2].TagValue(),
+                context.Data.TagsToProcess[Offset + 0].TagValue(),
+                null);
             var infoes = context.Data.Infoes.ToList();
             infoes.Add(info);
-
             var data = context.Data with { Infoes = infoes.ToImmutableList() };
             context = new StrategyContext<TextSpanInfoes<MeasurementInfo>>(data, true);
 

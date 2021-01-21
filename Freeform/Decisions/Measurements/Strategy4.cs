@@ -9,7 +9,7 @@ namespace Freeform.Decisions.Measurements
     public class Strategy4 : RemoveTagsStrategy<MeasurementInfo>
     {
         public int Offset { get; set; }
-        public Strategy4(int offset) : base(4) 
+        public Strategy4(int offset) : base(4, offset)
         {
             Offset = offset;
         }

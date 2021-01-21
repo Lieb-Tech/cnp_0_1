@@ -156,8 +156,20 @@ namespace Freeform.FreeformTag
             {"Post-operative", "time" },
             {"Post operatively", "time" },
             {"Post operative", "time" },
+            {"Postop", "time" },
+            {"Post-op", "time" },
             {"Postoperatively", "time" },
             {"Postoperative", "time" },
+
+            {"Pre-operatively", "time" },
+            {"Pre-operative", "time" },
+            {"Pre operatively", "time" },
+            {"Pre operative", "time" },
+            {"Preop", "time" },
+            {"Pre-op", "time" },
+            {"Preoperatively", "time" },
+            {"Preoperative", "time" },
+
             {"subsequently", "time" },
 
             {"chronic", "time" },
@@ -285,6 +297,7 @@ namespace Freeform.FreeformTag
 
         private readonly ImmutableList<string> BodyPart = new List<string>()
         {
+            "Uterine",
             "colon",
             "uterine",
             "breast",

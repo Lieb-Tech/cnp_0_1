@@ -23,6 +23,7 @@ namespace Freeform.FreeformParse
         {
             allForest.Add(new Measurement9());
 
+            taggedForest.Add(new Measurement12());
             taggedForest.Add(new Measurement11());
             taggedForest.Add(new Measurement10());
             taggedForest.Add(new Measurement8());

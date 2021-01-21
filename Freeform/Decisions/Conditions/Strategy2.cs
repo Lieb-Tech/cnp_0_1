@@ -8,7 +8,7 @@ namespace Freeform.Decisions.Conditions
     public class Strategy2 : RemoveTagsStrategy<ConditionInfo>
     {
         public int Offset { get; set; }
-        public Strategy2(int offset) : base(2)
+        public Strategy2(int offset) : base(2, offset)
         {
             Offset = offset;
         }

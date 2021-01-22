@@ -1,11 +1,12 @@
-﻿using Common;
+﻿
+using Common;
 using Common.DecisionTree;
 using Common.DecisionTree.DecisionQueries;
 using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Conditions
 {
-    public class Condition3 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
+    class Condition9 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -15,35 +16,40 @@ namespace Freeform.Decisions.Conditions
             trunk.Evaluate(data);
 
             if (data.Matched)
-                return new Strategy3(data.Index);
+                return new Strategy4(data.Index, new ConditionInfoConfiguration(2,0,1,3));
             else
                 return null;
         }
-        
+
         /// <summary>
-        // {gen:time:ccc} {gen:part:ccc} {gen:condition:ccc}
-        // {gen:time:history of} {gen:part:colon} {gen:condition:cancer}
+        // {gen:change:CCC} {gen:location:CCC} {gen:part:CCC} {gen:description:CCC}
+        // increase in left lung size
         /// </summary>
 
-        public Condition3()
+        public Condition9()
         {
-            var step3 = new IsTagOfType("condition", 2,
-                "is condition",
+            var step4 = new IsTagOfType("description", 3,
+                "is a body part",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step2 = new IsTagOfType("part", 1,
-                "is a body part",
+            var step3 = new IsTagOfType("part", 2,
+                "body part",
+                step4,
+                DecisionResults<ITaggedData>.GetNegative());
+
+            var step2 = new IsTagOfType("loc", 1,
+                "location",
                 step3,
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step1 = new FirstTagOfType("time",
-                "history ",
+            var step1 = new FirstTagOfType("change",
+                "location",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 
-            trunk = new NumberOfTags(3,
-                "number of tags = 3",
+            trunk = new NumberOfTags(4,
+                "number of tags = 4",
                 step1,
                 DecisionResults<ITaggedData>.GetNegative());
         }

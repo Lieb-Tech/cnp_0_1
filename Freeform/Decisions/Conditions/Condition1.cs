@@ -23,7 +23,7 @@ namespace Freeform.Decisions.Conditions
         /// {gen:condition:CCC}
         /// {gen:condition:adenopathy}
         /// </summary>
-        
+
         public Condition1()
         {
             trunk = new DecisionQuery<DecisionContext>()

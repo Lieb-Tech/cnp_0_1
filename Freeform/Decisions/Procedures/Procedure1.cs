@@ -3,32 +3,30 @@ using Common.DecisionTree;
 using Common.DecisionTree.DecisionQueries;
 using Freeform.FreeformParse;
 
-namespace Freeform.Decisions.Conditions
+namespace Freeform.Decisions.Procedures
 {
-    public class Condition3 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
+    public class Procedure1 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ProcedureInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
-        public IStrategy<TextSpanInfoes<ConditionInfo>> GetDecision(DecisionContext data)
+        public IStrategy<TextSpanInfoes<ProcedureInfo>> GetDecision(DecisionContext data)
         {
             data = data with { Index = 0, Matched = false };
             trunk.Evaluate(data);
 
             if (data.Matched)
-                return new Strategy3(data.Index);
+                return new StrategyMulti(data.Index, new ProcedureInfoConfiguration(0,null,1,2));
             else
                 return null;
         }
-        
-        /// <summary>
-        // {gen:time:ccc} {gen:part:ccc} {gen:condition:ccc}
-        // {gen:time:history of} {gen:part:colon} {gen:condition:cancer}
-        /// </summary>
 
-        public Condition3()
+        /// <summary>
+        /// {gen:procedure:lumpectomy} {gen:part:breast} {gen:condition:fibroma}       
+        /// </summary>
+        public Procedure1()
         {
             var step3 = new IsTagOfType("condition", 2,
-                "is condition",
+                "is a condition",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
@@ -37,8 +35,8 @@ namespace Freeform.Decisions.Conditions
                 step3,
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step1 = new FirstTagOfType("time",
-                "history ",
+            var step1 = new FirstTagOfType("procedure",
+                "is a Procedure",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 

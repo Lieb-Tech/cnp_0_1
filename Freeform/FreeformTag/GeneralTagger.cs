@@ -121,6 +121,7 @@ namespace Freeform.FreeformTag
             { "decrease", "change" },
             { "increase from", "change" },
             { "increase to", "change" },
+            { "increase in", "change" },
             { "increase", "change" },
 
             { "down from", "change" },
@@ -190,19 +191,19 @@ namespace Freeform.FreeformTag
             {"fellow", "physician" },
             {"nurse", "physician" },
             {"nurses", "physician" },
-
-            {"who", "patient" },
-            {"they", "patient:pro" },            
-            {"patient", "patient" },
-            {"patients", "patient" },
-            {"her", "patient:pro" },
-            {"his", "patient:pro" },
-            {"he", "patient:pro" },
-            {"she", "patient:pro" },
+            
+            // {"who", "patient" },
+            // {"they", "patient:pro" },            
+            // {"patient", "patient" },
+            // {"patients", "patient" },
+            // {"her", "patient:pro" },
+            // {"his", "patient:pro" },
+            // {"he", "patient:pro" },
+            // {"she", "patient:pro" },
 
             {"admitted", "patient" },
             {"admit", "patient" },
-
+            
             {"measuring","verb" },
             {"kept", "verb" },
             {"keep", "verb" },
@@ -235,6 +236,7 @@ namespace Freeform.FreeformTag
 
         private readonly ImmutableList<string> Descriptive = new List<string>()
         {
+            "size",
             "heavy",
             "calcified",
             "exophytic",
@@ -287,16 +289,21 @@ namespace Freeform.FreeformTag
             "base",
             "bases",
             "bilaterally",
+            "bilateral",
             "posterior",
             "lower",
             "extremity",
             "lateral",
-            "medial"
+            "medial",
 
         }.ToImmutableList();
 
         private readonly ImmutableList<string> BodyPart = new List<string>()
         {
+            "rotator cuff",
+            "shoulder",
+            "Ankle",
+            "abdominal",
             "Uterine",
             "colon",
             "uterine",
@@ -416,6 +423,7 @@ namespace Freeform.FreeformTag
             "spasm",
             "wound",
             "wounded",
+            "tear",
             "pain",
             "neurovascular",
             "compartment syndrome",

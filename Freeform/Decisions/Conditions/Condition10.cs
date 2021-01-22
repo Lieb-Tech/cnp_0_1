@@ -5,7 +5,7 @@ using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Conditions
 {
-    public class Condition3 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
+    public class Condition10 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -15,30 +15,35 @@ namespace Freeform.Decisions.Conditions
             trunk.Evaluate(data);
 
             if (data.Matched)
-                return new Strategy3(data.Index);
+                return new Strategy4(data.Index, new ConditionInfoConfiguration(3,1,2,0));
             else
                 return null;
         }
-        
+
         /// <summary>
-        // {gen:time:ccc} {gen:part:ccc} {gen:condition:ccc}
-        // {gen:time:history of} {gen:part:colon} {gen:condition:cancer}
+        // {gen:time:ccc} {get:location:cccc} {gen:part:ccc} {gen:condition:ccc}
+        // {gen:time:history of} {gen:loc:bilateral} {gen:part:shoulder} {gen:condition:pain}
         /// </summary>
 
-        public Condition3()
+        public Condition10()
         {
-            var step3 = new IsTagOfType("condition", 2,
+            var step4 = new IsTagOfType("condition", 3,
                 "is condition",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step2 = new IsTagOfType("part", 1,
+            var step3 = new IsTagOfType("part", 2,
                 "is a body part",
+                step4,
+                DecisionResults<ITaggedData>.GetNegative());
+
+            var step2 = new IsTagOfType("loc", 1,
+                "is a location",
                 step3,
                 DecisionResults<ITaggedData>.GetNegative());
 
             var step1 = new FirstTagOfType("time",
-                "history ",
+                "history",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 

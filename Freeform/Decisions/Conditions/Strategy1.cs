@@ -14,7 +14,7 @@ namespace Freeform.Decisions.Conditions
         public int Offset { get; set; }
         public override StrategyContext<TextSpanInfoes<ConditionInfo>> Execute(StrategyContext<TextSpanInfoes<ConditionInfo>> context)
         {
-            var info = new ConditionInfo(context.Data.TagsToProcess[Offset].TagValue(), null, null);
+            var info = new ConditionInfo(context.Data.TagsToProcess[Offset].TagValue(), null, null, null);
 
             var infoes = context.Data.Infoes.ToList();
             infoes.Add(info);

@@ -16,7 +16,7 @@ namespace Freeform.Decisions.Conditions
         {
             var info = new ConditionInfo(context.Data.TagsToProcess[Offset + 1].TagValue(),
                 context.Data.TagsToProcess[Offset + 0].TagValue(), 
-                null);
+                null, null);
 
             var infoes = context.Data.Infoes.ToList();
             infoes.Add(info);

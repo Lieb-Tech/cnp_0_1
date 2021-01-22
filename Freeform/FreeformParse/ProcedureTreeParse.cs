@@ -1,36 +1,31 @@
 ﻿using Common;
 using Common.DecisionTree;
 using Freeform.Decisions;
-using Freeform.Decisions.Conditions;
+using Freeform.Decisions.Procedures;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
 namespace Freeform.FreeformParse
 {
-    public class ConditionTreeParse
+    public class ProcedureTreeParse
     {
-        private readonly List<IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>> taggedForest = new();
-        public ConditionTreeParse()
+        private readonly List<IDecisionTrunk<DecisionContext, TextSpanInfoes<ProcedureInfo>>> taggedForest = new();
+        private readonly List<IDecisionTrunk<DecisionContext, TextSpanInfoes<ProcedureInfo>>> allForest = new();
+        public ProcedureTreeParse()
         {
             plantForest();
         }
 
         void plantForest()
         {
-            taggedForest.Add(new Condition10());
-            taggedForest.Add(new Condition9());
-            taggedForest.Add(new Condition8());
-            taggedForest.Add(new Condition7());
-            taggedForest.Add(new Condition6());
-            taggedForest.Add(new Condition5());
-            taggedForest.Add(new Condition4());
-            taggedForest.Add(new Condition3());
-            taggedForest.Add(new Condition2());
-            taggedForest.Add(new Condition1());
+            taggedForest.Add(new Procedure4());
+            taggedForest.Add(new Procedure3());
+            taggedForest.Add(new Procedure2());
+            taggedForest.Add(new Procedure1());
         }
 
-        public List<ConditionInfo> ProcessLine(TextSpan span)
+        public List<ProcedureInfo> ProcessLine(TextSpan span)
         {
             // if bulletlist, then remove it
             if (span.UpdatedText.StartsWith("{med:li"))
@@ -41,11 +36,11 @@ namespace Freeform.FreeformParse
             var tags = tss.SplitTagged(span.UpdatedText);
 
             // initial value for processing context
-            var tsp = new TextSpanInfoes<ConditionInfo>(span,
-                ImmutableList<ConditionInfo>.Empty,
+            var tsp = new TextSpanInfoes<ProcedureInfo>(span,
+                ImmutableList<ProcedureInfo>.Empty,
                  tags.ToImmutableList());
 
-            var ctx = new StrategyContext<TextSpanInfoes<ConditionInfo>>(tsp, true);
+            var ctx = new StrategyContext<TextSpanInfoes<ProcedureInfo>>(tsp, true);
 
             // keep going while there's data process
             while (ctx.Data.TagsToProcess.Any())
@@ -63,7 +58,7 @@ namespace Freeform.FreeformParse
             return ctx.Data.Infoes.ToList();
         }
 
-        private StrategyContext<TextSpanInfoes<ConditionInfo>> processTrees(TextSpan span, StrategyContext<TextSpanInfoes<ConditionInfo>> ctx)
+        private StrategyContext<TextSpanInfoes<ProcedureInfo>> processTrees(TextSpan span, StrategyContext<TextSpanInfoes<ProcedureInfo>> ctx)
         {
             // prepare data for processor
             var md = new DecisionContext()

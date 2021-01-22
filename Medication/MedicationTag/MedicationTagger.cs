@@ -52,7 +52,7 @@ namespace Medication.MedicationTag
                .Then(new TagRegex(@"\s(puff(s?))", "med:unit:"))
                .Then(new TagRegex(@"\s(unit(s?))", "med:unit:"))
                .Then(new TagRegex(@"\s(mg(s?))", "med:unit:"))
-               .Then(new TagRegex(@"\s(tab(s?))", "med:unit:"))
+               .Then(new TagRegex(@"\s(tab(let)?(s?))", "med:unit:"))
                .Then(new TagRegex(@"\s(cap(s?)(ule(s?)))", "med:unit:"))
 
                .Then(new TagRegex("\\d+-\\d+-\\d+", "gen:id:"))

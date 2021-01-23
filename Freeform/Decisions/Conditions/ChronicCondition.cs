@@ -3,36 +3,39 @@ using Common.DecisionTree;
 using Common.DecisionTree.DecisionQueries;
 using Freeform.FreeformParse;
 
-namespace Freeform.Decisions.Procedures
+namespace Freeform.Decisions.Conditions
 {
-    public class Procedure3 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ProcedureInfo>>
+    public class ChronicCondition : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
-        public IStrategy<TextSpanInfoes<ProcedureInfo>> GetDecision(DecisionContext data)
+        public IStrategy<TextSpanInfoes<ConditionInfo>> GetDecision(DecisionContext data)
         {
             data = data with { Index = 0, Matched = false };
             trunk.Evaluate(data);
 
             if (data.Matched)
-                return new StrategyMulti(data.Index, new ProcedureInfoConfiguration(1, null, 0, null));
+                return new Strategy2(data.Index);
             else
                 return null;
         }
 
         /// <summary>
-        /// {gen:procedure:lumpectomy} {gen:part:left} {gen:part:lung} {gen:condition:fibroma}       
+        /// <summary>
+        /// {gen:descriptive:CC} {gen:condition:CCC}
+        /// {gen:time:Chronic} {gen:condition:adenopathy}
         /// </summary>
-        public Procedure3()
-        {
 
-            var step2 = new IsTagOfType("procedure", 1,
-                "is a procedure",
+        /// </summary>
+        public ChronicCondition()
+        {
+            var step2 = new IsTagOfType("condition", 1,
+                "is a condition",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step1 = new FirstTagOfType("part",
-                "is a bodyPart",
+            var step1 = new FirstTagHasValue("chronic",
+                "is a chronic",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 

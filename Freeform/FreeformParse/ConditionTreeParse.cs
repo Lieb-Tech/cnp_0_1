@@ -18,16 +18,17 @@ namespace Freeform.FreeformParse
 
         void plantForest()
         {
-            taggedForest.Add(new Condition10());
-            taggedForest.Add(new Condition9());
-            taggedForest.Add(new Condition8());
-            taggedForest.Add(new Condition7());
-            taggedForest.Add(new Condition6());
-            taggedForest.Add(new Condition5());
-            taggedForest.Add(new Condition4());
-            taggedForest.Add(new Condition3());
-            taggedForest.Add(new Condition2());
-            taggedForest.Add(new Condition1());
+            taggedForest.Add(new HistoryCondition());
+            taggedForest.Add(new TimeLocationPartCondition());
+            taggedForest.Add(new ChangeLocationPartDescription());
+            taggedForest.Add(new ChangePartDescription());
+            taggedForest.Add(new LocationPartCondition());
+            taggedForest.Add(new PartCondition());
+            taggedForest.Add(new ConditionPart());
+            taggedForest.Add(new TimeDescriptionBehavior());
+            taggedForest.Add(new TimePartCondition());
+            taggedForest.Add(new ChronicCondition());
+            taggedForest.Add(new OnlyCondition());
         }
 
         public List<ConditionInfo> ProcessLine(TextSpan span)

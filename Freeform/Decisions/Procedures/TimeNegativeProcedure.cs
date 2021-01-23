@@ -3,42 +3,41 @@ using Common.DecisionTree;
 using Common.DecisionTree.DecisionQueries;
 using Freeform.FreeformParse;
 
-namespace Freeform.Decisions.Conditions
+namespace Freeform.Decisions.Procedures
 {
-    public class Condition3 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
+    class TimeNegativeProcedure : IDecisionTrunk<DecisionContext, TextSpanInfoes<ProcedureInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
-        public IStrategy<TextSpanInfoes<ConditionInfo>> GetDecision(DecisionContext data)
+        public IStrategy<TextSpanInfoes<ProcedureInfo>> GetDecision(DecisionContext data)
         {
             data = data with { Index = 0, Matched = false };
             trunk.Evaluate(data);
 
             if (data.Matched)
-                return new Strategy3(data.Index);
+                return new StrategyMulti(data.Index, new ProcedureInfoMap(2, null, 0, 1));
             else
                 return null;
         }
-        
-        /// <summary>
-        // {gen:time:ccc} {gen:part:ccc} {gen:condition:ccc}
-        // {gen:time:history of} {gen:part:colon} {gen:condition:cancer}
-        /// </summary>
 
-        public Condition3()
+        /// <summary>
+        /// {time negative procedure}
+        /// </summary>
+        public TimeNegativeProcedure()
         {
-            var step3 = new IsTagOfType("condition", 2,
-                "is condition",
+
+            var step3 = new IsTagOfType("procedure", 2,
+                "is a procedure",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step2 = new IsTagOfType("part", 1,
-                "is a body part",
+            var step2 = new IsTagOfType("negative", 1,
+                "is negative",
                 step3,
                 DecisionResults<ITaggedData>.GetNegative());
 
             var step1 = new FirstTagOfType("time",
-                "history ",
+                "is a time",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 

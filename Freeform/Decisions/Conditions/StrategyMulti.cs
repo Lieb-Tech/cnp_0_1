@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace Freeform.Decisions.Conditions
 {
-    public class Strategy4 : RemoveTagsStrategy<ConditionInfo>
+    public class StrategyMulti : RemoveTagsStrategy<ConditionInfo>
     {
-        public readonly ConditionInfoConfiguration FieldOrder;
+        public readonly ConditionInfoMap FieldOrder;
         public int Offset { get; set; }
-        public Strategy4(int offset, ConditionInfoConfiguration fieldOrder) : base(4, offset)
+        public StrategyMulti(int offset, ConditionInfoMap fieldOrder) : base(4, offset)
         {
             FieldOrder = fieldOrder;
             Offset = offset;

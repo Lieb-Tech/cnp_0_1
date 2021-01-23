@@ -19,10 +19,13 @@ namespace Freeform.FreeformParse
 
         void plantForest()
         {
-            taggedForest.Add(new Procedure4());
-            taggedForest.Add(new Procedure3());
-            taggedForest.Add(new Procedure2());
-            taggedForest.Add(new Procedure1());
+            taggedForest.Add(new LocationPartProcedure());
+            taggedForest.Add(new TimeNegativeProcedure());
+            taggedForest.Add(new DeviceProcedure());
+            taggedForest.Add(new OnlyProcedure());
+            taggedForest.Add(new PartProcedure());
+            taggedForest.Add(new ProcedureLocationPartCondition());
+            taggedForest.Add(new ProcedurePartCondition());
         }
 
         public List<ProcedureInfo> ProcessLine(TextSpan span)

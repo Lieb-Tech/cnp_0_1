@@ -1,72 +1,47 @@
-﻿using Common;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Common.Processing
 {
     public class DictionaryReplaceStrategy : IStrategy<TextSpan>
     {
-        private string _tag;
         private readonly Dictionary<string, string> _replacments;
-        public DictionaryReplaceStrategy(Dictionary<string, string> replacments, string tag)
+        public DictionaryReplaceStrategy(Dictionary<string, string> replacments)
         {
-            _tag = tag;
             _replacments = replacments;
         }
 
         public StrategyContext<TextSpan> Execute(StrategyContext<TextSpan> context)
         {
-            var data = context.Data;
+            var data = context;
             foreach (var kvp in _replacments.OrderByDescending(d => d.Key.Length))
             {
-                var updated = processValue(kvp, data);
-                data = data with { UpdatedText = updated };
+                data = replaceValue(data, kvp);
             }
-            return new StrategyContext<TextSpan>(data, true);
+            return data;
         }
 
-        private string processValue(KeyValuePair<string, string> kvp, TextSpan data)
+        private static StrategyContext<TextSpan> replaceValue(StrategyContext<TextSpan> data, KeyValuePair<string, string> kvp)
         {
-            // since am replacing matches with modified + original, can't use .Replace
-            // since updatedText is being modified each time, re-evaluate
+            var pattern = "\\b" + kvp.Key.Replace(".", "\\.").Replace(".", "\\.") + "\\b";
+            var regEx = new Regex(pattern);
 
-            string updatedText = data.UpdatedText;
-            var idx = updatedText.IndexOf(kvp.Key, StringComparison.CurrentCultureIgnoreCase);
-            int lastMatchPos = 0;
-            while (idx > -1)
+            int startIdx = 0;
+            while (regEx.IsMatch(data.Data.UpdatedText, startIdx))
             {
-                // create replacement string
-                var tagged = $" {{{_tag}{kvp.Value.Trim()}}} ";
+                var match = regEx.Match(data.Data.UpdatedText);
 
-                // update index to continue past this update
-                lastMatchPos = idx + tagged.Length;
+                if (data.Data.UpdatedText.IsInTag(match.Index))
+                    continue;
 
-                // do the update
-                updatedText = tagText(updatedText, idx, kvp.Key.Length, tagged);
-
-                if (lastMatchPos < updatedText.Length)
-                    // check if more to do
-                    idx = updatedText.IndexOf(kvp.Key, lastMatchPos, StringComparison.CurrentCultureIgnoreCase);
-                else
-                    idx = -1;
+                var updated = data.Data.UpdatedText.Replace(kvp.Key, kvp.Value);
+                var span = data.Data with { UpdatedText = updated };
+                data = data with { Data = span };
+                startIdx = match.Index + 1;
             }
-
-            return updatedText;
-        }
-
-        private static string tagText(string updatedText, int idx, int matchLen, string tagged)
-        {
-            // skip if already tagged
-            if (!updatedText.IsInTag(idx))
-            {
-                // good to go, so replace the text
-                updatedText = updatedText.Substring(0, idx) +
-                    tagged +
-                    updatedText.Substring(idx + matchLen);
-            }
-
-            return updatedText;
+            
+            return data;
         }
     }
 }

@@ -6,7 +6,7 @@ using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Conditions
 {
-    class Condition8 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
+    class ChangeLocationPartDescription : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -16,25 +16,30 @@ namespace Freeform.Decisions.Conditions
             trunk.Evaluate(data);
 
             if (data.Matched)
-                return new Strategy4(data.Index, new ConditionInfoConfiguration(1, 0, 2, null));
+                return new StrategyMulti(data.Index, new ConditionInfoMap(2,0,1,3));
             else
                 return null;
         }
 
         /// <summary>
-        // {gen:change:CCC} {gen:part:CCC} {gen:description:CCC}
-        // increase in uterine size
+        // {gen:change:CCC} {gen:location:CCC} {gen:part:CCC} {gen:description:CCC}
+        // increase in left lung size
         /// </summary>
 
-        public Condition8()
+        public ChangeLocationPartDescription()
         {
-            var step3 = new IsTagOfType("descrip", 2,
+            var step4 = new IsTagOfType("description", 3,
                 "is a body part",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step2 = new IsTagOfType("part", 1,
+            var step3 = new IsTagOfType("part", 2,
                 "body part",
+                step4,
+                DecisionResults<ITaggedData>.GetNegative());
+
+            var step2 = new IsTagOfType("loc", 1,
+                "location",
                 step3,
                 DecisionResults<ITaggedData>.GetNegative());
 
@@ -43,8 +48,8 @@ namespace Freeform.Decisions.Conditions
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 
-            trunk = new NumberOfTags(3,
-                "number of tags = 3",
+            trunk = new NumberOfTags(4,
+                "number of tags = 4",
                 step1,
                 DecisionResults<ITaggedData>.GetNegative());
         }

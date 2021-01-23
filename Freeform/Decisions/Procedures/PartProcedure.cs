@@ -5,7 +5,7 @@ using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Procedures
 {
-    public class Procedure2 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ProcedureInfo>>
+    public class PartProcedure : IDecisionTrunk<DecisionContext, TextSpanInfoes<ProcedureInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -15,7 +15,7 @@ namespace Freeform.Decisions.Procedures
             trunk.Evaluate(data);
 
             if (data.Matched)
-                return new StrategyMulti(data.Index, new ProcedureInfoConfiguration(0, 1, 2, 3));
+                return new StrategyMulti(data.Index, new ProcedureInfoMap(1, null, 0, null));
             else
                 return null;
         }
@@ -23,30 +23,21 @@ namespace Freeform.Decisions.Procedures
         /// <summary>
         /// {gen:procedure:lumpectomy} {gen:part:left} {gen:part:lung} {gen:condition:fibroma}       
         /// </summary>
-        public Procedure2()
+        public PartProcedure()
         {
-            var step4 = new IsTagOfType("condition", 3,
-                "is a condition",
+
+            var step2 = new IsTagOfType("procedure", 1,
+                "is a procedure",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step3 = new IsTagOfType("part", 2,
-                "is a body part",
-                step4,
-                DecisionResults<ITaggedData>.GetNegative());
-
-            var step2 = new IsTagOfType("loc", 1,
-                "is a location",
-                step3,
-                DecisionResults<ITaggedData>.GetNegative());
-
-            var step1 = new FirstTagOfType("proced",
-                "is a Procedure",
+            var step1 = new FirstTagOfType("part",
+                "is a bodyPart",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 
-            trunk = new NumberOfTags(4,
-                "number of tags = 4",
+            trunk = new NumberOfTags(2,
+                "number of tags = 2",
                 step1,
                 DecisionResults<ITaggedData>.GetNegative());
         }

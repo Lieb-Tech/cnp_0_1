@@ -1,7 +1,6 @@
 ﻿using Common;
 using Common.Processing;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 
 namespace Freeform.FreeformTag
@@ -10,16 +9,19 @@ namespace Freeform.FreeformTag
     {
         private readonly DictionaryTagStrategy _proceessingStrategy;
         private readonly Dictionary<string,string> _tagInfoes = new Dictionary<string, string>();
-
+        private readonly DictionaryReplaceStrategy _dictionaryReplaceStrategy;
         public TextSpan ProcessLine(TextSpan span)
         {
             var ctx = new StrategyContext<TextSpan>(span, true);
-            var updated = _proceessingStrategy.Execute(ctx);
+            var updated = _dictionaryReplaceStrategy.Execute(ctx);
+            updated = _proceessingStrategy.Execute(updated);
             return updated.Data;
         }
 
         public GeneralTagger()
         {
+            _dictionaryReplaceStrategy = new DictionaryReplaceStrategy(NormalizationPairs);
+
             addValues(Location, "loc");
             addValues(Descriptive, "descriptive");
             addValues(BodyPart, "part");
@@ -40,7 +42,7 @@ namespace Freeform.FreeformTag
             _proceessingStrategy = new DictionaryTagStrategy(ordered);
         }
 
-        private void addValuesWithDash(ImmutableList<string> values, string key)
+        private void addValuesWithDash(List<string> values, string key)
         {
             foreach (var value in values)
             {
@@ -49,16 +51,9 @@ namespace Freeform.FreeformTag
         }
 
         private void addValues(List<string> values, string key)
-        { 
-            foreach (var value in values)
-            {
-                _tagInfoes.Add(value, $"gen:{key}:");
-            }
-        }
-        private void addValues(ImmutableList<string> values, string key)
         {
             foreach (var value in values)
-            {
+            {               
                 _tagInfoes.Add(value, $"gen:{key}:");
             }
         }
@@ -68,22 +63,17 @@ namespace Freeform.FreeformTag
             foreach (var kvp in TagPairs)
             {
                 _tagInfoes.Add(kvp.Key, $"gen:{kvp.Value}:");
-            }
-
-            foreach (var kvp in NormalizationPairs)
-            {
-                _tagInfoes.Add(kvp.Key, $"gen:{kvp.Value}:");
-            }
+            }            
         }
 
         /******************/
 
-        private readonly ImmutableList<string> Stopwords = new List<string>()
+        private readonly List<string> Stopwords = new List<string>()
         {
             "however"
-        }.ToImmutableList<string>();
+        }.ToList<string>();
 
-        private readonly ImmutableDictionary<string, string> TagPairs = new Dictionary<string, string>()
+        private readonly Dictionary<string, string> TagPairs = new Dictionary<string, string>()
         {
             {"is a" , "link" },
             {"is" , "link" },
@@ -130,7 +120,7 @@ namespace Freeform.FreeformTag
             { "up from", "change" },
 
             {"within normal limits", "Positive" },
-
+            {"failed", "Negative" },
             {"no", "Negative" },
             {"non", "Negative" },
             {"non-", "Negative" },
@@ -212,9 +202,9 @@ namespace Freeform.FreeformTag
             {"poor result", "verb" },
             {"taken down", "verb" },
 
-        }.ToImmutableDictionary<string, string>();
+        };
 
-        private readonly ImmutableDictionary<string, string> NormalizationPairs = new Dictionary<string, string>()
+        private readonly Dictionary<string, string> NormalizationPairs = new Dictionary<string, string>()
         {
             { "angio access", "angioaccess" },
             {"AV graft", "arteriovenous graft" },
@@ -231,10 +221,9 @@ namespace Freeform.FreeformTag
             { "seventh", "7th" },
             { "eigth", "8th" },
             { "nineth", "9th" },
+        };
 
-        }.ToImmutableDictionary<string, string>();
-
-        private readonly ImmutableList<string> Descriptive = new List<string>()
+        private readonly List<string> Descriptive = new List<string>()
         {
             "size",
             "heavy",
@@ -253,7 +242,7 @@ namespace Freeform.FreeformTag
             "swelling",
             "occluded",
             "ongoing",
-            "failed",
+            
             "clear",
             "clean",
             "dry",
@@ -275,9 +264,9 @@ namespace Freeform.FreeformTag
             "equally",
             "round",
             "small",
-        }.ToImmutableList();
+        }.ToList();
 
-        private readonly ImmutableList<string> Location = new List<string>()
+        private readonly List<string> Location = new List<string>()
         {
             "in the",
             "mid",
@@ -296,10 +285,12 @@ namespace Freeform.FreeformTag
             "lateral",
             "medial",
 
-        }.ToImmutableList();
+        }.ToList();
 
-        private readonly ImmutableList<string> BodyPart = new List<string>()
+
+        private readonly List<string> BodyPart = new List<string>()
         {
+            "Coronary",
             "rotator cuff",
             "shoulder",
             "Ankle",
@@ -346,7 +337,7 @@ namespace Freeform.FreeformTag
             "gastrocnemius",
             "foot"
 
-        }.ToImmutableList();
+        }.ToList();
 
         private readonly List<string> other = new List<string>() 
         {
@@ -357,8 +348,11 @@ namespace Freeform.FreeformTag
             "notes",
         };
 
-        private readonly ImmutableList<string> Procedures = new List<string>() 
+        private readonly List<string> Procedures = new List<string>() 
         {
+            "angiogram",
+            "cath",
+            "Thrombectomy",
             "lumpectomy",
             "myomectomy",
             "tonsillectomy",
@@ -367,9 +361,11 @@ namespace Freeform.FreeformTag
             "Bohler frame",
             "fluid removal",
             "AV graft thrombectomy",
+            "arteriovenous graft thrombectomy",
             "Hemodialysis",
             "dialysis",
-            "dialysis AV graft thrombectomy",
+            "dialysis av graft thrombectomy",
+            "dialysis arteriovenous graft thrombectomy",
             "dialysis angioaccess",
             "transplant",
             "catheter placement",
@@ -383,9 +379,9 @@ namespace Freeform.FreeformTag
             "immobilizer",
             "dressing"
 
-        }.ToImmutableList();
+        }.ToList();
 
-        private readonly ImmutableList<string> Devices = new List<string>()
+        private readonly List<string> Devices = new List<string>()
         {
             "dialysis tunneled angiocatheter",
             "Tunneled hemodialysis catheter",
@@ -394,17 +390,17 @@ namespace Freeform.FreeformTag
             "graft",
             
 
-        }.ToImmutableList();
+        }.ToList();
 
-        private readonly ImmutableList<string> Behaviors = new List<string>()
+        private readonly List<string> Behaviors = new List<string>()
         {
             "alcohol use",
             "smoker",
             "outpatient dialysis"
-        }.ToImmutableList();
+        }.ToList();
 
         private readonly List<string> Conditions = new List<string>()
-        {
+        {            
             "kidney stones",
             "stones",
             "hepatitis",
@@ -444,9 +440,9 @@ namespace Freeform.FreeformTag
             "systolic Ejection murmur",
             "Coronary artery disease status post myocardial infarction",
             "Coronary artery disease status post MI",
-            "coronary artery disease",
+            "coronary artery disease",            
             "Hyperlipidemia",
-            "Abdominal aortic aneurysm",
+            "aortic aneurysm",
             "Restless leg syndrome",
             "Chronic obstructive pulmonary disease",
             "polycystic kidney disease",
@@ -479,7 +475,7 @@ namespace Freeform.FreeformTag
 
         };
 
-        private readonly ImmutableList<string> Tests = new List<string>()
+        private readonly List<string> Tests = new List<string>()
         {
             "elevated",
             "elevate",
@@ -489,7 +485,7 @@ namespace Freeform.FreeformTag
             "plain films",
             "plain film",
 
-        }.ToImmutableList();
+        }.ToList();
 
         private readonly List<string> Status = new List<string>()
         {

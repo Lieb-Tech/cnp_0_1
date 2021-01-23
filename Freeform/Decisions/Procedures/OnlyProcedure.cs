@@ -5,7 +5,7 @@ using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Procedures
 {
-    public class Procedure4 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ProcedureInfo>>
+    public class OnlyProcedure : IDecisionTrunk<DecisionContext, TextSpanInfoes<ProcedureInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -15,7 +15,7 @@ namespace Freeform.Decisions.Procedures
             trunk.Evaluate(data);
 
             if (data.Matched)
-                return new StrategyMulti(data.Index, new ProcedureInfoConfiguration(0, null, null, null));
+                return new StrategyMulti(data.Index, new ProcedureInfoMap(0, null, null, null));
             else
                 return null;
         }
@@ -23,7 +23,7 @@ namespace Freeform.Decisions.Procedures
         /// <summary>
         /// {med:li:1} {gen:procedure:dialysis}
         /// </summary>
-        public Procedure4()
+        public OnlyProcedure()
         {
             var step2 = new IsTagOfType("procedure", 0,
                 "is a procedure",

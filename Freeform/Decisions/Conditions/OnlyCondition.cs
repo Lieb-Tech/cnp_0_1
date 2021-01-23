@@ -4,7 +4,7 @@ using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Conditions
 {
-    public class Condition1 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
+    public class OnlyCondition : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
     {
         private readonly DecisionQuery<DecisionContext> trunk;
 
@@ -24,7 +24,7 @@ namespace Freeform.Decisions.Conditions
         /// {gen:condition:adenopathy}
         /// </summary>
 
-        public Condition1()
+        public OnlyCondition()
         {
             trunk = new DecisionQuery<DecisionContext>()
             {

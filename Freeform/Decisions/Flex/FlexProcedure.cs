@@ -4,13 +4,13 @@ using System.Collections.Immutable;
 using System.Linq;
 
 
-namespace Freeform.Decisions.Procedures
+namespace Freeform.Decisions.Flex
 {
-    public class StrategyMulti : RemoveTagsStrategy<ProcedureInfo>
+    public class FlexProcedure : RemoveTagsStrategy<ProcedureInfo>
     {
         public readonly ProcedureInfoMap FieldOrder;
         public int Offset { get; set; }
-        public StrategyMulti(int offset, ProcedureInfoMap fieldOrder) : base(4, offset)
+        public FlexProcedure(int offset, ProcedureInfoMap fieldOrder) : base(4, offset)
         {
             FieldOrder = fieldOrder;
             Offset = offset;

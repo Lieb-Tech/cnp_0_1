@@ -7,7 +7,7 @@ namespace Medication.MedicationTag
     // tag "x times a day" parts
     public class TimesADayBuilder : IStrategy<TextSpan>
     {
-        private readonly DictionaryReplaceStrategy dictionaryReplaceStrategy;
+        private readonly DictionaryReplaceAndTagStrategy dictionaryReplaceStrategy;
 
         public TimesADayBuilder()
         {
@@ -26,7 +26,7 @@ namespace Medication.MedicationTag
                 { "4x a day", "qid" }                
             };
 
-            dictionaryReplaceStrategy = new DictionaryReplaceStrategy(listing, "med:freq:");
+            dictionaryReplaceStrategy = new DictionaryReplaceAndTagStrategy(listing, "med:freq:");
         }
         public StrategyContext<TextSpan> Execute(StrategyContext<TextSpan> context)
         {

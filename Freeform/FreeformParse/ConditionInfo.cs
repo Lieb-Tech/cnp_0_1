@@ -6,7 +6,7 @@ namespace Freeform.FreeformParse
         public string StrategyUsed { get; set; }
     }
 
-    public record ConditionInfoConfiguration(int? Condition, int? Info, int? History, int? Other)
+    public record ConditionInfoMap(int? Condition, int? Info, int? History, int? Other)
     {
 
     }

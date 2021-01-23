@@ -5,7 +5,7 @@ using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Procedures
 {
-    public class Procedure1 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ProcedureInfo>>
+    public class DeviceProcedure : IDecisionTrunk<DecisionContext, TextSpanInfoes<ProcedureInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -15,33 +15,29 @@ namespace Freeform.Decisions.Procedures
             trunk.Evaluate(data);
 
             if (data.Matched)
-                return new StrategyMulti(data.Index, new ProcedureInfoConfiguration(0,null,1,2));
+                return new StrategyMulti(data.Index, new ProcedureInfoMap(1, null, 0, null));
             else
                 return null;
         }
 
         /// <summary>
-        /// {gen:procedure:lumpectomy} {gen:part:breast} {gen:condition:fibroma}       
+        /// {gen:procedure:lumpectomy} {gen:part:left} {gen:part:lung} {gen:condition:fibroma}       
         /// </summary>
-        public Procedure1()
+        public DeviceProcedure()
         {
-            var step3 = new IsTagOfType("condition", 2,
-                "is a condition",
+
+            var step2 = new IsTagOfType("procedure", 1,
+                "is a procedure",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step2 = new IsTagOfType("part", 1,
-                "is a body part",
-                step3,
-                DecisionResults<ITaggedData>.GetNegative());
-
-            var step1 = new FirstTagOfType("procedure",
-                "is a Procedure",
+            var step1 = new FirstTagOfType("device",
+                "is a device",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 
-            trunk = new NumberOfTags(3,
-                "number of tags = 3",
+            trunk = new NumberOfTags(2,
+                "number of tags = 2",
                 step1,
                 DecisionResults<ITaggedData>.GetNegative());
         }

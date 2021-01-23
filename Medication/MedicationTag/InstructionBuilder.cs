@@ -9,7 +9,7 @@ namespace Medication.MedicationTag
     /// </summary>
     public class InstructionBuilder : IStrategy<TextSpan>
     {
-        private readonly DictionaryReplaceStrategy dictionaryReplaceStrategy;
+        private readonly DictionaryReplaceAndTagStrategy dictionaryReplaceStrategy;
         public InstructionBuilder()
         {
             var listing = new Dictionary<string, string>()
@@ -19,7 +19,7 @@ namespace Medication.MedicationTag
                 { "with a meal", "with a meal" },
             };
 
-            dictionaryReplaceStrategy = new DictionaryReplaceStrategy(listing, "med:instr:");
+            dictionaryReplaceStrategy = new DictionaryReplaceAndTagStrategy(listing, "med:instr:");
         }
         public StrategyContext<TextSpan> Execute(StrategyContext<TextSpan> context)
         {

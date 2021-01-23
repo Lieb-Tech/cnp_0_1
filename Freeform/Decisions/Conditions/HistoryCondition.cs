@@ -1,12 +1,11 @@
-﻿
-using Common;
+﻿using Common;
 using Common.DecisionTree;
 using Common.DecisionTree.DecisionQueries;
 using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Conditions
 {
-    class Condition7 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
+    public class HistoryCondition : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -16,35 +15,30 @@ namespace Freeform.Decisions.Conditions
             trunk.Evaluate(data);
 
             if (data.Matched)
-                return new Strategy3(data.Index);
+                return new StrategyMulti(data.Index, new ConditionInfoMap(1,null,0, null));
             else
                 return null;
         }
 
         /// <summary>
-        // {gen:location:CCC} {gen:part:CCC} {gen:condition:CCC}
-        // left tibula fracture
+        // {gen:history:CCC} {gen:condition:ccc}
+        // history of ...
         /// </summary>
 
-        public Condition7()
+        public HistoryCondition()
         {
-            var step3 = new IsTagOfType("condition", 2,
-                "is a body part",
+            var step2 = new IsTagOfType("condition", 1,
+                "is a condition",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step2 = new IsTagOfType("part", 1,
-                "body part",
-                step3,
-                DecisionResults<ITaggedData>.GetNegative());
-
-            var step1 = new FirstTagOfType("loc",
-                "location",
+            var step1 = new FirstTagOfType("history",
+                "history ",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 
-            trunk = new NumberOfTags(3,
-                "number of tags = 3",
+            trunk = new NumberOfTags(2,
+                "number of tags = 2",
                 step1,
                 DecisionResults<ITaggedData>.GetNegative());
         }

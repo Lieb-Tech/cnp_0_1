@@ -5,5 +5,5 @@
         public string StrategyUsed { get; set; }
     }
 
-    public record ProcedureInfoConfiguration(int? Procedure, int? Location, int? BodyPart, int? Condition) { }
+    public record ProcedureInfoMap(int? Procedure, int? Location, int? BodyPart, int? Condition) { }
 }

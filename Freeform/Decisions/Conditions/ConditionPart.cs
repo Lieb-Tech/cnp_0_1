@@ -6,7 +6,7 @@ using Freeform.FreeformParse;
 namespace Freeform.Decisions.Conditions
 {
     
-    public class Condition5 : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
+    public class ConditionPart : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -26,7 +26,7 @@ namespace Freeform.Decisions.Conditions
         // Carcinoma of the colon
         /// </summary>
 
-        public Condition5()
+        public ConditionPart()
         {
             var step2 = new IsTagOfType("part", 1,
                 "is a body part",

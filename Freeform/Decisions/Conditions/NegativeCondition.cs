@@ -3,13 +3,13 @@ using Common.DecisionTree;
 using Common.DecisionTree.DecisionQueries;
 using Freeform.FreeformParse;
 
-namespace Freeform.Decisions.Measurements
+namespace Freeform.Decisions.Conditions
 {
-    public class Measurement7 : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
+    class NegativeCondition : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
-        public IStrategy<TextSpanInfoes<MeasurementInfo>> GetDecision(DecisionContext data)
+        public IStrategy<TextSpanInfoes<ConditionInfo>> GetDecision(DecisionContext data)
         {
             data = data with { Index = 0, Matched = false };
             trunk.Evaluate(data);
@@ -19,21 +19,16 @@ namespace Freeform.Decisions.Measurements
             else
                 return null;
         }
-
-        /// <summary>
-        /// specific use case
-        /// {gen:measure:HEENT} exam {gen:Positive:within normal limits} .
-        /// </summary>
-
-        public Measurement7()
+        
+        public NegativeCondition()
         {
-            var step2 = new IsTagOfType("positive", 1,
-                "is positive",
+            var step2 = new IsTagOfType("condition", 1,
+                "is a condition",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step1 = new FirstTagOfType("measure",
-                "is measure type",
+            var step1 = new FirstTagOfType("negative",
+                "negative",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 

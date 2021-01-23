@@ -5,7 +5,7 @@ using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Measurements
 {
-    public class Measurement12 : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
+    public class MeasureDescriptive : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -15,34 +15,30 @@ namespace Freeform.Decisions.Measurements
             trunk.Evaluate(data);
 
             if (data.Matched)
-                return new Strategy5(data.Index);
+                return new Strategy2(data.Index);
             else
                 return null;
         }
 
         /// <summary>
-        /// {gen:measurement:CCC} {gen:num:NNN}
-        /// {gen:measurement:calcium} {gen:num:2}
+        /// specific use case
+        /// {gen:measure:vital signs} {gen:descriptive:stable} .
         /// </summary>
-        public Measurement12()
+
+        public MeasureDescriptive()
         {
-            var step3 = new IsTagOfType("num", 2,
-                "is a number",
+            var step2 = new IsTagOfType("descriptive", 1,
+                "descriptive",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step2 = new IsTagOfType("measure", 1,
-                "is a measurement",
-                step3,
-                DecisionResults<ITaggedData>.GetNegative());
-
-            var step1 = new FirstTagOfType("time",
-                "is a measurement",
+            var step1 = new FirstTagOfType("measure",
+                "is measure type",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 
-            trunk = new NumberOfTags(3,
-                "number of tags = 3",
+            trunk = new NumberOfTags(2,
+                "number of tags = 2",
                 step1,
                 DecisionResults<ITaggedData>.GetNegative());
         }

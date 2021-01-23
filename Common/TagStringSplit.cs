@@ -46,6 +46,9 @@ namespace Common
         /// extract both elements which have and have not been tagged
         public List<string> Split(string taggedString)
         {
+            if (string.IsNullOrWhiteSpace(taggedString))
+                return new List<string>();
+
             List<string> values = new List<string>();           
             string cache = "";
             for (int p = 0; p < taggedString.Length; p++)

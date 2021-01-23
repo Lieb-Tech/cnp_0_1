@@ -193,7 +193,8 @@ namespace Freeform.FreeformTag
 
             {"admitted", "patient" },
             {"admit", "patient" },
-            
+
+            {"on standing","verb" },
             {"measuring","verb" },
             {"kept", "verb" },
             {"keep", "verb" },
@@ -224,7 +225,7 @@ namespace Freeform.FreeformTag
         };
 
         private readonly List<string> Descriptive = new List<string>()
-        {
+        {            
             "size",
             "heavy",
             "calcified",
@@ -400,7 +401,8 @@ namespace Freeform.FreeformTag
         }.ToList();
 
         private readonly List<string> Conditions = new List<string>()
-        {            
+        {
+            "adenopathy",
             "kidney stones",
             "stones",
             "hepatitis",
@@ -408,6 +410,7 @@ namespace Freeform.FreeformTag
             "cirrhosis of the liver",
             "cirrhosis",
             "cancer",
+            "dizziness on standing",
             "orthostatic dizziness",
             "jugular venous distention",
             "systolic ejection murmur", 
@@ -456,6 +459,7 @@ namespace Freeform.FreeformTag
 
         private readonly List<string> Measurement = new List<string>()
         {
+            "cardiac sounds",
             "urinalysis",
             "Vital signs",
             "Vital sign",
@@ -496,7 +500,6 @@ namespace Freeform.FreeformTag
             "Alert",
             "orientated",
             "Pleasant",
-            "cardiac sounds",
         };
 
         // rrr 

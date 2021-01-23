@@ -21,19 +21,23 @@ namespace Freeform.FreeformParse
 
         void plantForest()
         {
-            allForest.Add(new Measurement9());
+            allForest.Add(new MeasureDescriptive());
+            allForest.Add(new DescriptiveMeasure());
 
-            taggedForest.Add(new Measurement12());
-            taggedForest.Add(new Measurement11());
-            taggedForest.Add(new Measurement10());
-            taggedForest.Add(new Measurement8());
-            taggedForest.Add(new Measurement7());
-            taggedForest.Add(new Measurement6());
-            taggedForest.Add(new Measurement5());
-            taggedForest.Add(new Measurement4());
-            taggedForest.Add(new Measurement3());
-            taggedForest.Add(new Measurement2());
-            taggedForest.Add(new Measurement1());
+            taggedForest.Add(new DescriptiveMeasure());
+            taggedForest.Add(new MeasureDescriptive());
+
+            taggedForest.Add(new TimeMeasureNum());
+            taggedForest.Add(new Ultra_Condition());
+            taggedForest.Add(new VitalsMeasure());
+            taggedForest.Add(new MeasureNegative());
+            taggedForest.Add(new MeasurePositive());
+            taggedForest.Add(new UltrasoundNumPart());
+            taggedForest.Add(new MeasureNumToNum());
+            taggedForest.Add(new MeasureNumRangeNum());
+            taggedForest.Add(new MeasureNumChangeNum());
+            taggedForest.Add(new MeasureNum());
+            taggedForest.Add(new OnlyMeasure());
         }
 
         public List<MeasurementInfo> ProcessLine(TextSpan span)

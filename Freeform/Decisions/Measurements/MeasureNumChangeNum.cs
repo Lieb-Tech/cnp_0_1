@@ -5,7 +5,7 @@ using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Measurements
 {
-    public class Measurement5 : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
+    public class MeasureNumChangeNum : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -16,41 +16,40 @@ namespace Freeform.Decisions.Measurements
 
             if (data.Matched)
                 return new Strategy4(data.Index);
-            else
+            else 
                 return null;
         }
 
         /// <summary>
-        /// {gen:measurement:CCC} {gen:num:NNN} {gen:connector:to} {gen:num:NNN}
-        /// {gen:measurement:calcium} {gen:num:2} {gen:connector:to} {gen:num:5}
+        /// {gen:measurement:CCC} {gen:num:NNN} {gen:change:CCCC} {gen:num:NNN}
+        /// {gen:measurement:calcium} {gen:num:5} {gen:change:down to} {gen:num:2}
         /// </summary>
-
-        public Measurement5()
+        public MeasureNumChangeNum()
         {
             var step4 = new IsTagOfType("num", 3,
                 "is a number",
-                new PositiveDecisionResult<ITaggedData>(),
-                new NegativeDecisionResult<ITaggedData>());
+                DecisionResults<ITaggedData>.GetPositive(),
+                DecisionResults<ITaggedData>.GetNegative());
 
-            var step3 = new TagHasValue("to", 2,
-                "is a range",
+            var step3 = new IsTagOfType("change", 2,
+                "is a change",
                 step4,
-                new NegativeDecisionResult<ITaggedData>());
+                DecisionResults<ITaggedData>.GetNegative());
 
-            var step2 = new IsTagOfType("num", 1,
+            var step2 = new IsTagOfType("num",1,
                 "is a number",
                 step3,
-                new NegativeDecisionResult<ITaggedData>());
+                DecisionResults<ITaggedData>.GetNegative());
 
             var step1 = new FirstTagOfType("measure",
-                "is a number",
+                "find a measurement",
                 step2,
-                new NegativeDecisionResult<ITaggedData>());
+                DecisionResults<ITaggedData>.GetNegative());
 
             trunk = new NumberOfTags(4,
-                "number of tags = 4",
+                "number of tags = 4", 
                 step1,
-                new NegativeDecisionResult<ITaggedData>());
+                DecisionResults<ITaggedData>.GetNegative());
         }
     }
 }

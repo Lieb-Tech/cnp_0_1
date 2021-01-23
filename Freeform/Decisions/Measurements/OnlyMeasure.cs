@@ -4,7 +4,7 @@ using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Measurements
 {
-    public class Measurement1 : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
+    public class OnlyMeasure : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
     {
         private readonly DecisionQuery<DecisionContext> trunk;
 
@@ -24,7 +24,7 @@ namespace Freeform.Decisions.Measurements
         /// {gen:measurement:alert}
         /// </summary>
 
-        public Measurement1()
+        public OnlyMeasure()
         {
             trunk = new DecisionQuery<DecisionContext>()
             {

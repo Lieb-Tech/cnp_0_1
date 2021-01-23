@@ -5,7 +5,7 @@ using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Measurements
 {
-    public class Measurement8 : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
+    public class DescriptiveMeasure : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -22,22 +22,22 @@ namespace Freeform.Decisions.Measurements
 
         /// <summary>
         /// specific use case
-        /// {gen:measure:HEENT} exam {gen:Positive:within normal limits} .
+        /// {gen:measure:vital signs} {gen:descriptive:stable} .
         /// </summary>
 
-        public Measurement8()
+        public DescriptiveMeasure()
         {
-            var step2 = new IsTagOfType("negative", 1,
-                "is negative",
+            var step2 = new IsTagOfType("measure", 1,
+                "measure",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step1 = new FirstTagOfType("measure",
-                "is measure type",
+            var step1 = new FirstTagOfType("descriptive",
+                "is descriptive",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 
-            trunk = new NumberOfTags(3,
+            trunk = new NumberOfTags(2,
                 "number of tags = 2",
                 step1,
                 DecisionResults<ITaggedData>.GetNegative());

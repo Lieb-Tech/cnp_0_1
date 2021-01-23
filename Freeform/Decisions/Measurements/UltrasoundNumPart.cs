@@ -5,7 +5,7 @@ using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Measurements
 {
-    public class Measurement11 : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
+    public class UltrasoundNumPart : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -22,29 +22,20 @@ namespace Freeform.Decisions.Measurements
 
         /// <summary>
         /// specific use case
-        /// {gen:measurement:Ultrasound} {gen:negative:NNN} {gen:condition:CCCC}
-        /// {gen:measurement:Ultrasound} {gen:negative:no} {gen:condition:stones}
-        /// and
-        /// {gen:measurement:Ultrasound} {gen:positive:NNN} {gen:condition:CCCC}
-        /// {gen:measurement:Ultrasound} {gen:positive:within limits} {gen:condition:something}
+        /// {gen:measurement:Ultrasound} {gen:num:NNN} {gen:part:CCCC}
         /// </summary>
 
-        public Measurement11()
+        public UltrasoundNumPart()
         {
-            var step_condition = new IsTagOfType("condition", 2,
+            var step3 = new IsTagOfType("part", 2,
                 "is a part",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step_positive = new IsTagOfType("positive", 1,
-                "is positive",
-                step_condition,
+            var step2 = new IsTagOfType("num", 1,
+                "is a number",
+                step3,
                 DecisionResults<ITaggedData>.GetNegative());
-
-            var step2 = new IsTagOfType("neg", 1,
-                "is negative",
-                step_condition,
-                step_positive);
 
             var step1 = new FirstTagHasValue("ultrasound", 
                 "ultrasound",

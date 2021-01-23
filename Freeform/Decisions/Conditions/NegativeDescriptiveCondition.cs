@@ -3,42 +3,37 @@ using Common.DecisionTree;
 using Common.DecisionTree.DecisionQueries;
 using Freeform.FreeformParse;
 
-namespace Freeform.Decisions.Measurements
+namespace Freeform.Decisions.Conditions
 {
-    public class Measurement6 : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
+    class NegativeDescriptiveCondition : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
-        public IStrategy<TextSpanInfoes<MeasurementInfo>> GetDecision(DecisionContext data)
+        public IStrategy<TextSpanInfoes<ConditionInfo>> GetDecision(DecisionContext data)
         {
             data = data with { Index = 0, Matched = false };
             trunk.Evaluate(data);
 
             if (data.Matched)
-                return new Strategy3(data.Index);
+                return new StrategyMulti(data.Index, new ConditionInfoMap(2, 1,0,null));
             else
                 return null;
         }
 
-        /// <summary>
-        /// specific use case
-        /// {gen:measurement:Ultrasound} {gen:num:NNN} {gen:part:CCCC}
-        /// </summary>
-
-        public Measurement6()
+        public NegativeDescriptiveCondition()
         {
-            var step3 = new IsTagOfType("part", 2,
-                "is a part",
+            var step3 = new IsTagOfType("condition", 2,
+                "is a condition",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step2 = new IsTagOfType("num", 1,
-                "is a number",
+            var step2 = new IsTagOfType("descrip", 1,
+                "descritive",
                 step3,
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step1 = new FirstTagHasValue("ultrasound", 
-                "ultrasound",
+            var step1 = new FirstTagOfType("negative",
+                "negative",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 

@@ -1,16 +1,15 @@
-﻿
-using Common;
+﻿using Common;
 using Common.DecisionTree;
 using Common.DecisionTree.DecisionQueries;
 using Freeform.FreeformParse;
 
-namespace Freeform.Decisions.Conditions
+namespace Freeform.Decisions.Measurements
 {
-    class PartCondition : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
+    public class MeasurePositive : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
-        public IStrategy<TextSpanInfoes<ConditionInfo>> GetDecision(DecisionContext data)
+        public IStrategy<TextSpanInfoes<MeasurementInfo>> GetDecision(DecisionContext data)
         {
             data = data with { Index = 0, Matched = false };
             trunk.Evaluate(data);
@@ -22,19 +21,19 @@ namespace Freeform.Decisions.Conditions
         }
 
         /// <summary>
-        // {gen:part:CCC} {gen:condition:CCC}
-        // uterine cancer
+        /// specific use case
+        /// {gen:measure:HEENT} exam {gen:Positive:within normal limits} .
         /// </summary>
 
-        public PartCondition()
+        public MeasurePositive()
         {
-            var step2 = new IsTagOfType("condition", 1,
-                "is a condition",
+            var step2 = new IsTagOfType("positive", 1,
+                "is positive",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step1 = new FirstTagOfType("part",
-                "body part",
+            var step1 = new FirstTagOfType("measure",
+                "is measure type",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 

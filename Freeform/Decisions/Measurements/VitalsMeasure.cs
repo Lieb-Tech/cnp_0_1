@@ -5,7 +5,7 @@ using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Measurements
 {
-    public class Measurement10 : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
+    public class VitalsMeasure : IDecisionTrunk<DecisionContext, TextSpanInfoes<MeasurementInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -25,7 +25,7 @@ namespace Freeform.Decisions.Measurements
         /// {gen:measure:vital signs} {gen:descriptive:stable} .
         /// </summary>
 
-        public Measurement10()
+        public VitalsMeasure()
         {
             var checkMeasure0 = new DecisionQuery<ITaggedData>()
             {

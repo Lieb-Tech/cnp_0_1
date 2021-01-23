@@ -1,12 +1,11 @@
-﻿
-using Common;
+﻿using Common;
 using Common.DecisionTree;
 using Common.DecisionTree.DecisionQueries;
 using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Conditions
 {
-    class PartCondition : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
+    class TimeConditionVerb : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -16,30 +15,30 @@ namespace Freeform.Decisions.Conditions
             trunk.Evaluate(data);
 
             if (data.Matched)
-                return new Strategy2(data.Index);
+                return new StrategyMulti(data.Index, new ConditionInfoMap(1, 0, 2, null));
             else
                 return null;
         }
 
-        /// <summary>
-        // {gen:part:CCC} {gen:condition:CCC}
-        // uterine cancer
-        /// </summary>
-
-        public PartCondition()
+        public TimeConditionVerb()
         {
-            var step2 = new IsTagOfType("condition", 1,
-                "is a condition",
+            var step3 = new IsTagOfType("verb", 2,
+                "is a verb",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 
-            var step1 = new FirstTagOfType("part",
-                "body part",
+            var step2 = new IsTagOfType("condition", 1,
+                "is a condition",
+                step3,
+                DecisionResults<ITaggedData>.GetNegative());
+
+            var step1 = new FirstTagOfType("time",
+                "is time ",
                 step2,
                 DecisionResults<ITaggedData>.GetNegative());
 
-            trunk = new NumberOfTags(2,
-                "number of tags = 2",
+            trunk = new NumberOfTags(3,
+                "number of tags = 3",
                 step1,
                 DecisionResults<ITaggedData>.GetNegative());
         }

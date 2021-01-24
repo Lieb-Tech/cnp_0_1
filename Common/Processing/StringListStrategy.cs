@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Common.Processing
 {
@@ -29,24 +30,19 @@ namespace Common.Processing
 
         private string processValue(string value, string updatedText)
         {
-            var idx = updatedText.IndexOf(value, StringComparison.CurrentCultureIgnoreCase);
+            var regEx = new Regex($"\\b{value}\\b", RegexOptions.CultureInvariant);
             int lastMatchPos = 0;
-            while (idx > -1)
+            while (regEx.IsMatch(updatedText, lastMatchPos))
             {
                 // create replacement string
                 var tagged = $" {{{_tag}{value.Trim()}}} ";
+                var idx = regEx.Match(updatedText, lastMatchPos).Index;
 
                 // update index to continue past this update
                 lastMatchPos = idx + tagged.Length;
 
                 // do the update
-                updatedText = tagText(updatedText, idx, value.Length, tagged);
-
-                if (lastMatchPos < updatedText.Length)
-                    // check if more to do
-                    idx = updatedText.IndexOf(value, lastMatchPos, StringComparison.CurrentCultureIgnoreCase);
-                else
-                    idx = -1;
+                updatedText = tagText(updatedText, idx, value.Length, tagged);              
             }
 
             return updatedText;

@@ -26,3 +26,8 @@ Ideas for to-do list:
 - More detailed (procedure/measurement/) info results
 - Drug use categorization
 - More sample data (with different formats?)
+
+- Medication 2 part names:
+  * CLEANSER
+  * HYDROGEL
+  * CREAM

@@ -1,5 +1,6 @@
 ﻿using Common;
 using Common.Processing;
+using System.Collections.Generic;
 
 namespace Medication.MedicationTag
 {
@@ -22,6 +23,7 @@ namespace Medication.MedicationTag
             // tag medication info
             medBuilder = new LineNumBuilder()  // take care of numbered list items
                 .Then(new DotStrategy())    // remove dots (periods) except if it's a decimal
+                .Then(new TagRegex(@"(\d+,)+\d+", "med:num:"))
                 .Then(new CommaStrategy())    // remove dots (periods) except if it's a decimal
 
                .Then(new TimesADayBuilder())  // tag 2x day type of entries
@@ -61,6 +63,8 @@ namespace Medication.MedicationTag
                .Then(new TagRegex("take with food", "med:instr:"))
 
                .Then(new TagRegex("(\\([\\sa-zA-Z0-9]+\\))", "med:secondary:"))
+
+               
 
                .Then(new TagRegex(@"[0-9]+\s?(\\|/|-|to)\s?[0-9]+", "med:num:"))
                .Then(new TagRegex(@"([0-9]+,)*[0-9]+(\.[0-9]+)?", "med:num:"))

@@ -40,14 +40,14 @@ namespace Medication.MedicationParse.InferredNameStrategies
             context.Data.Tags.Insert(1, inferred);
 
             // remove the name from the original string with the name
-            var replaceValue = context.Data.Tags[1].Replace(values.Last(), "");
+            var replaceValue = context.Data.Tags[0].Replace(values.Last(), "");
 
             // if there were other words in original string, then save to list
-            if (!string.IsNullOrWhiteSpace(replaceValue))
+            if (!string.IsNullOrWhiteSpace(replaceValue)) 
                 context.Data.Tags[0] = replaceValue;
             else
                 // or no other text, then remove blank element from array
-                context.Data.Tags.RemoveAt(1);
+                context.Data.Tags.RemoveAt(0);
 
             // return updated data
             var data = context.Data with

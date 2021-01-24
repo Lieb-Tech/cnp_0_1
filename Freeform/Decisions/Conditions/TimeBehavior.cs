@@ -5,7 +5,7 @@ using Freeform.FreeformParse;
 
 namespace Freeform.Decisions.Conditions
 {
-    public class TimeCondition : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
+    public class TimeBehavior : IDecisionTrunk<DecisionContext, TextSpanInfoes<ConditionInfo>>
     {
         private readonly DecisionQuery<ITaggedData> trunk;
 
@@ -25,10 +25,10 @@ namespace Freeform.Decisions.Conditions
         // history of ...
         /// </summary>
 
-        public TimeCondition()
+        public TimeBehavior()
         {
-            var step2 = new IsTagOfType("condition", 1,
-                "is a condition",
+            var step2 = new IsTagOfType("behav", 1,
+                "is a behavior",
                 DecisionResults<ITaggedData>.GetPositive(),
                 DecisionResults<ITaggedData>.GetNegative());
 

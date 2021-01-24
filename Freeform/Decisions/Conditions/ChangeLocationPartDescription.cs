@@ -16,7 +16,7 @@ namespace Freeform.Decisions.Conditions
             trunk.Evaluate(data);
 
             if (data.Matched)
-                return new StrategyMulti(data.Index, new ConditionInfoMap(2,0,1,3));
+                return new StrategyMulti(data.Index, 4, new ConditionInfoMap(2,0,1,3));
             else
                 return null;
         }

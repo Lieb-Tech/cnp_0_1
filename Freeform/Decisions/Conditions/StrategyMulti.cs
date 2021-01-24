@@ -10,7 +10,7 @@ namespace Freeform.Decisions.Conditions
     {
         public readonly ConditionInfoMap FieldOrder;
         public int Offset { get; set; }
-        public StrategyMulti(int offset, ConditionInfoMap fieldOrder) : base(4, offset)
+        public StrategyMulti(int offset, int count, ConditionInfoMap fieldOrder) : base(count, offset)
         {
             FieldOrder = fieldOrder;
             Offset = offset;

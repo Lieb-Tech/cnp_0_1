@@ -162,7 +162,7 @@ namespace Freeform.FreeformTag
             {"Preoperative", "time" },
 
             {"subsequently", "time" },
-
+            {"former", "time" },
             {"chronic", "time" },
 
             {"is married", "patient:status" },
@@ -212,6 +212,8 @@ namespace Freeform.FreeformTag
             {"CKD", "chronic kidney disease" },
             { "GI", "Gastrointestinal"},
             { "EXTREM", "Extremities" },
+
+            { "post MI", "postmyocardial infarction" },
 
             { "first", "1st" },
             { "second", "2nd" },
@@ -395,6 +397,7 @@ namespace Freeform.FreeformTag
 
         private readonly List<string> Behaviors = new List<string>()
         {
+            "alcoholic",
             "alcohol use",
             "smoker",
             "outpatient dialysis"
@@ -402,6 +405,7 @@ namespace Freeform.FreeformTag
 
         private readonly List<string> Conditions = new List<string>()
         {
+            "postmyocardial infarction",
             "adenopathy",
             "kidney stones",
             "stones",

@@ -18,12 +18,12 @@ namespace Medication.MedicationTag
                 .Then(new TagRegex(@"(\d{1,2}/\d{1,2}/\d{2,4})", "gen:date:"))
 
                 .Then(new TagRegex(@"\d{1,2}:\d{1,2}:\d{2,4} [AaPp][Mm]", "gen:time:"));
-                
+
 
             // tag medication info
             medBuilder = new LineNumBuilder()  // take care of numbered list items
                 .Then(new DotStrategy())    // remove dots (periods) except if it's a decimal
-                .Then(new TagRegex(@"(\d+,)+\d+", "med:num:"))
+                .Then(new TagRegex(@"\w\d+\w", "med:num:"))
                 .Then(new CommaStrategy())    // remove dots (periods) except if it's a decimal
 
                .Then(new TimesADayBuilder())  // tag 2x day type of entries
@@ -33,7 +33,7 @@ namespace Medication.MedicationTag
 
                .Then(new TagRegex("prn [a-z]* pain", "med:qual:"))
                .Then(new TagRegex("(prn pain)|(prn)|(as needed (for pain)?)", "med:qual:"))
-               
+
 
                .Then(new TagRegex("\\s((SC)|(topical tp)|(TP))\\s", "med:format:"))
                .Then(new TagRegex("\\s((po)|(sublingual)|(iv)|(oral(ly)?))\\s", "med:format:"))
@@ -64,11 +64,10 @@ namespace Medication.MedicationTag
 
                .Then(new TagRegex("(\\([\\sa-zA-Z0-9]+\\))", "med:secondary:"))
 
-               
-
                .Then(new TagRegex(@"[0-9]+\s?(\\|/|-|to)\s?[0-9]+", "med:num:"))
-               .Then(new TagRegex(@"([0-9]+,)*[0-9]+(\.[0-9]+)?", "med:num:"))
-               .Then(new TagRegex(@"[0-9]+", "med:num:"));
+               .Then(new TagRegex(@"\w(\d+,)*\d+(\.\d+)?\w", "med:num:"));
+
+               //.Then(new TagRegex(@"[0-9]+", "med:num:"));
 
                 // .Then(new TagRegex("for \\d day(s)?", "med:other:"));
                 // .Then(new TagRegex("starting \\w?", "med:other:"));

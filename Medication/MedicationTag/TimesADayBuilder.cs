@@ -23,7 +23,9 @@ namespace Medication.MedicationTag
 
                 {"4 times a day", "qid" },
                 {"4 times per day", "qid" },
-                { "4x a day", "qid" }                
+                { "4x a day", "qid" },
+                { "a day", "qd" },
+                { "per day", "qd" },
             };
 
             dictionaryReplaceStrategy = new DictionaryReplaceAndTagStrategy(listing, "med:freq:");

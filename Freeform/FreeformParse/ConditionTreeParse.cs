@@ -18,6 +18,7 @@ namespace Freeform.FreeformParse
 
         void plantForest()
         {
+            taggedForest.Add(new DescriptiveCondition());
             taggedForest.Add(new TimeBehavior());
             taggedForest.Add(new NegativeDescriptiveCondition());
             taggedForest.Add(new TimeConditionVerb());

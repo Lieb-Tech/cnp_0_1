@@ -470,7 +470,7 @@ namespace Freeform.FreeformTag
             "Ultrasound",
             "heart rate",
             "HEIGHT",
-            "HEENT",
+            // "HEENT",
             "Potassium",   // 6.3 down to 4.8
             "calcium",
             "bun",

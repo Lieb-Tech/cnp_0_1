@@ -15,7 +15,7 @@ namespace Common.Processing
             {               
                 // get the info
                 var match = regex.Match(updatedText, lastMatchPos);
-                if (!updatedText.IsInTag(match.Index))
+                if (!string.IsNullOrWhiteSpace(match.Value) && !updatedText.IsInTag(match.Index))
                 {
                     // create replacement string
                     tagged = $" {{{tag}{match.Value.Trim()}}} ";
@@ -27,6 +27,8 @@ namespace Common.Processing
                 }
                 else
                     lastMatchPos = match.Index + match.Value.Length;
+
+                lastMatchPos += tag.Length;
 
                 if (lastMatchPos < updatedText.Length)
                     // check if more to do

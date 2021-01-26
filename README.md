@@ -31,3 +31,7 @@ Ideas for to-do list:
   * CLEANSER
   * HYDROGEL
   * CREAM
+
+
+- Multiple Tags per word:
+  * former -- time & potentially negative

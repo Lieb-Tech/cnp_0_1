@@ -53,11 +53,11 @@ namespace Medication.MedicationParse
 
                 // if none set - then no confidence
                 if (ItemsSet == 0 || Tags.Count == 0)
-                    return double.MaxValue;
+                    return 50;
 
                 // if only Size set - and a few items in array, then no confidence
                 if (ItemsSet == 1 && !string.IsNullOrEmpty(Size) && Tags.Count < 3)
-                    return double.MaxValue;
+                    return 50;
 
                 double offset = 0;
                 var nonTag = Tags.Where(t => !t.Contains("{"));
@@ -71,13 +71,15 @@ namespace Medication.MedicationParse
                     offset += 1;
 
                 // if name was inferred or is primary, then good confidence
-                if (!string.IsNullOrEmpty(InferredName) || !string.IsNullOrEmpty(PrimaryName)) 
+                if (!string.IsNullOrEmpty(InferredName) || !string.IsNullOrEmpty(PrimaryName))
                 {
                     if (Tags.Count > 1)
                         offset = -1.5;
                     else
                         offset = 0;
-                }                    
+                }
+                else
+                    offset += 2;
 
                 var value = (Tags.Count + offset) / (double)ItemsSet;
                 return value;

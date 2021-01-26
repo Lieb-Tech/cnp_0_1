@@ -31,7 +31,8 @@ namespace Freeform.FreeformTag
             addValues(Devices, "device");
             addValues(Behaviors, "behavior");
             addValues(Measurement, "measure");
-            addValues(Tests, "test");
+            //addValues(Tests, "test");
+            addValues(Tests, "procedure");
             addValues(Status, "status");
 
             addValuesWithDash(Location, "loc");
@@ -194,6 +195,7 @@ namespace Freeform.FreeformTag
             {"admitted", "patient" },
             {"admit", "patient" },
 
+            {"revealed", "verb" },
             {"on standing","verb" },
             {"measuring","verb" },
             {"kept", "verb" },
@@ -245,7 +247,8 @@ namespace Freeform.FreeformTag
             "swelling",
             "occluded",
             "ongoing",
-            
+            "elevated",
+            "elevate",
             "clear",
             "clean",
             "dry",
@@ -258,8 +261,7 @@ namespace Freeform.FreeformTag
             "Abnormal",
             "palpable",
             "Soft",
-            "everted",
-            "tense",
+            "everted",            
             "tender",
             "comminuted",            
             "full range of motion",
@@ -271,6 +273,8 @@ namespace Freeform.FreeformTag
 
         private readonly List<string> Location = new List<string>()
         {
+            "right and in the left",
+            "right and left",
             "in the",
             "mid",
             "left",
@@ -353,6 +357,8 @@ namespace Freeform.FreeformTag
 
         private readonly List<string> Procedures = new List<string>() 
         {
+            "steroid injection",
+             "steroid injections",
             "angiogram",
             "cath",
             "Thrombectomy",
@@ -405,6 +411,7 @@ namespace Freeform.FreeformTag
 
         private readonly List<string> Conditions = new List<string>()
         {
+            "tense",
             "postmyocardial infarction",
             "adenopathy",
             "kidney stones",
@@ -433,6 +440,9 @@ namespace Freeform.FreeformTag
             "loss of consciousness",
             "FRACTURE",
             "edema",
+            "murmurs",
+            "rubs", 
+            "gallops",
             "murmer",
             "masses",
             "Depression",
@@ -449,6 +459,7 @@ namespace Freeform.FreeformTag
             "Coronary artery disease status post MI",
             "coronary artery disease",            
             "Hyperlipidemia",
+            "murmur",
             "aortic aneurysm",
             "Restless leg syndrome",
             "Chronic obstructive pulmonary disease",
@@ -485,8 +496,7 @@ namespace Freeform.FreeformTag
 
         private readonly List<string> Tests = new List<string>()
         {
-            "elevated",
-            "elevate",
+
             "CT scan",
             "films",
             "film",
